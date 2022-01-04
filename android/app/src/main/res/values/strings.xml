@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kokoro</string>
+    <string name="facebook_app_id">421981762963556</string>
+    <string name="fb_login_protocol_scheme">fb421981762963556</string>
+    <string name="facebook_client_token">69cc47e02ac4c34980dc7bac56a40815</string>
+</resources>

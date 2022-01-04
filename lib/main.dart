@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:kokoro/screens/welcome_screen.dart';
+import 'package:kokoro/screens/login_screen.dart';
+import 'package:kokoro/screens/notes_screen.dart';
 import 'firebase_options.dart';
 import 'constants.dart';
 
@@ -18,9 +19,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      initialRoute: WelcomeScreen.id,
+      initialRoute: LoginScreen.id,
       routes: {
-        WelcomeScreen.id: (context) => const WelcomeScreen(),
+        LoginScreen.id: (context) => const LoginScreen(),
+        NotesScreen.id: (context) => const NotesScreen(),
       },
     );
   }
