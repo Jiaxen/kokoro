@@ -65,7 +65,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         progress?.show();
                         try {
                           UserCredential user = await signInWithGoogle();
-                          Navigator.pushNamed(context, NotesScreen.id);
                         } catch (e) {
                           _errorMessage = e.toString();
                         }
@@ -73,7 +72,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       }),
                       SignInButton(Buttons.Facebook,
                           text: 'Continue with Facebook',
-                          onPressed: signInWithFacebook),
+                          onPressed: () async {
+                            final progress = ProgressHUD.of(context);
+                            progress?.show();
+                            try {
+                              UserCredential user = await signInWithFacebook();
+                            } catch (e) {
+                              _errorMessage = e.toString();
+                            }
+                            progress?.dismiss();
+                          }),
                       if (_errorMessage != null) _buildLoginMessage(),
                     ],
                   ),
