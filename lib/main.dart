@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         builder: (context, user, _) {
           print(user.toString());
           return MaterialApp(
-            initialRoute: (user == null) ? LoginScreen.id : NotesScreen.id,
+            home: (user == null) ? const LoginScreen() : const NotesScreen(),
             routes: {
               LoginScreen.id: (context) => const LoginScreen(),
               NotesScreen.id: (context) => const NotesScreen(),
