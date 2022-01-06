@@ -28,6 +28,12 @@ class MyApp extends StatelessWidget {
       child: Consumer<User?>(
         builder: (context, user, _) {
           return MaterialApp(
+            builder: (context, child) {
+              return ScrollConfiguration(
+                behavior: NoGlowScrollBehavior(),
+                child: child!,
+              );
+            },
             home: (user == null) ? const LoginScreen() : const NotesScreen(),
             routes: {
               LoginScreen.id: (context) => const LoginScreen(),
@@ -37,5 +43,13 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class NoGlowScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
   }
 }

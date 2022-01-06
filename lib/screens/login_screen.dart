@@ -4,7 +4,7 @@ import 'package:kokoro/constants.dart';
 import 'package:kokoro/login_utils.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'notes_screen.dart';
+import 'package:flutter/services.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -20,6 +20,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Change Android system navigation bar colour to match app
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: kPrimaryAppColour, // navigation bar color
+    ));
     return Scaffold(
       backgroundColor: kPrimaryAppColour,
       body: ProgressHUD(

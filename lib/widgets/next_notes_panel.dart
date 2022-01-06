@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 
-class next_notes_tabs extends StatelessWidget {
-  const next_notes_tabs({
+class NextNotesTabs extends StatelessWidget {
+  const NextNotesTabs({
     Key? key,
     required TabController tabController,
   }) : _tabController = tabController, super(key: key);

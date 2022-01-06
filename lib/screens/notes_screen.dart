@@ -5,6 +5,8 @@ import 'package:kokoro/constants.dart';
 import 'package:kokoro/screens/drawer.dart';
 import 'package:kokoro/widgets/next_meeting_card.dart';
 import 'package:kokoro/widgets/next_notes_panel.dart';
+import 'package:flutter/services.dart';
+
 
 class NotesScreen extends StatefulWidget {
   static const String id = 'notes_screen';
@@ -40,6 +42,10 @@ class _NotesScreenState extends State<NotesScreen>
 
   @override
   Widget build(BuildContext context) {
+    // Change Android system navigation bar colour to match app
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: kPrimaryBackgroundColour, // navigation bar color
+    ));
     return ProgressHUD(
       child: Builder(builder: (context) {
         return Scaffold(
@@ -125,7 +131,7 @@ class NextMeetingNotes extends StatelessWidget {
             Expanded(
               child: Container(
                 color: kPrimaryAppColour,
-                child: next_notes_tabs(tabController: _tabController),
+                child: NextNotesTabs(tabController: _tabController),
               ),
             ),
           ]),
