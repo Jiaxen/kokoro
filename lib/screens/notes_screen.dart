@@ -125,21 +125,14 @@ class NextMeetingNotes extends StatelessWidget {
             Expanded(
               child: Container(
                 color: kPrimaryAppColour,
-                child: TabBarView(
-                  controller: _tabController,
-                  children: <Widget>[
-                    NotesPanel(),
-                    NotesPanel(),
-                    NotesPanel(),
-                    NotesPanel(),
-                  ],
-                ),
+                child: next_notes_tabs(tabController: _tabController),
               ),
             ),
           ]),
     );
   }
 }
+
 
 
 

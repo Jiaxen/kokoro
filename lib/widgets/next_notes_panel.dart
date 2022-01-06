@@ -1,5 +1,28 @@
 import 'package:flutter/material.dart';
 
+
+class next_notes_tabs extends StatelessWidget {
+  const next_notes_tabs({
+    Key? key,
+    required TabController tabController,
+  }) : _tabController = tabController, super(key: key);
+
+  final TabController _tabController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TabBarView(
+      controller: _tabController,
+      children: <Widget>[
+        NotesPanel(),
+        NotesPanel(),
+        NotesPanel(),
+        NotesPanel(),
+      ],
+    );
+  }
+}
+
 class NotesPanel extends StatelessWidget {
   const NotesPanel({
     Key? key,
