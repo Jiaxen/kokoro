@@ -47,14 +47,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       Text(
                         'Kokoro',
                         style: TextStyle(
-                            color: kPrimaryFontColour,
+                            color: kPrimaryTitleColour,
                             fontSize: 48,
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
                         'Relationship Meetings',
                         style: TextStyle(
-                            color: kPrimaryFontColour,
+                            color: kPrimaryTitleColour,
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),

@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
       initialData: FirebaseAuth.instance.currentUser,
       child: Consumer<User?>(
         builder: (context, user, _) {
-          print(user.toString());
           return MaterialApp(
             home: (user == null) ? const LoginScreen() : const NotesScreen(),
             routes: {
