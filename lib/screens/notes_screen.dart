@@ -6,6 +6,7 @@ import 'package:kokoro/screens/drawer.dart';
 import 'package:kokoro/widgets/next_meeting_card.dart';
 import 'package:kokoro/widgets/next_notes_panel.dart';
 import 'package:flutter/services.dart';
+import 'package:kokoro/widgets/user_image.dart';
 import 'package:provider/provider.dart';
 import 'package:kokoro/models/user.dart';
 import 'package:kokoro/services/user_services.dart';
@@ -32,36 +33,41 @@ class _NotesScreenState extends State<NotesScreen>
     // Setup the tab controller
     _tabController = TabController(length: 4, vsync: this);
     // Setup the scroll listener to determine if at top of page
-    _scrollController.addListener(() {
-      setState(() {
-        if (_scrollController.position.pixels == 0) {
-          isTopOfScreen = true;
-        } else {
-          isTopOfScreen = false;
-        }
-      });
-    });
+    _scrollController.addListener(
+      () {
+        setState(
+          () {
+            if (_scrollController.position.pixels == 0) {
+              isTopOfScreen = true;
+            } else {
+              isTopOfScreen = false;
+            }
+          },
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     // Change Android system navigation bar colour to match app
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: kPrimaryBackgroundColour, // navigation bar color
+      systemNavigationBarColor:
+          kPrimaryBackgroundColour, // navigation bar color
     ));
     // Get firebase user for the uid
     return ProgressHUD(
-      child: Builder(builder: (context) {
-        final user = Provider.of<User>(context);
-        return StreamProvider<AppUser?>(
-          create: (context) => userCollection()
-              .doc(user.uid)
-              .snapshots()
-              .map((snapshot) => documentSnapshotToAppUser(snapshot)),
-          initialData: null,
-          builder: (context, snapshot) {
-            return Builder(
-              builder: (context) {
+      child: Builder(
+        builder: (context) {
+          final user = Provider.of<User>(context);
+          return StreamProvider<AppUser?>(
+            create: (context) => userCollection()
+                .doc(user.uid)
+                .snapshots()
+                .map((snapshot) => documentSnapshotToAppUser(snapshot)),
+            initialData: null,
+            child: Consumer<AppUser?>(
+              builder: (context, appUser, _) {
                 return Scaffold(
                   floatingActionButton: FloatingActionButton(
                       backgroundColor: kSecondaryAppColour,
@@ -78,24 +84,27 @@ class _NotesScreenState extends State<NotesScreen>
                   backgroundColor: kPrimaryBackgroundColour,
                   drawer: MainDrawer(auth: _auth),
                   appBar: AppBar(
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Kokoro',
-                            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-                          ),
-                          Text(
-                            'Relationship Meetings',
-                            style: TextStyle(fontSize: 14),
-                          )
-                        ],
-                      ),
-                      centerTitle: false,
-                      backgroundColor: kPrimaryAppColour,
-                      elevation:  isTopOfScreen ? 0 : 1),
+                    leading: buildUserAvatar(appUser?.photoURL),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'Kokoro',
+                          style: TextStyle(
+                              fontSize: 28, fontWeight: FontWeight.w700),
+                        ),
+                        Text(
+                          'Relationship Meetings',
+                          style: TextStyle(fontSize: 14),
+                        )
+                      ],
+                    ),
+                    centerTitle: false,
+                    backgroundColor: kPrimaryAppColour,
+                    elevation: isTopOfScreen ? 0 : 1,
+                  ),
                   body: ListView(
-                      controller: _scrollController,
+                    controller: _scrollController,
                     physics: const ClampingScrollPhysics(),
                     children: <Widget>[
                       NextMeetingCard(),
@@ -103,11 +112,11 @@ class _NotesScreenState extends State<NotesScreen>
                     ],
                   ),
                 );
-              }
-            );
-          }
-        );
-      }),
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -116,7 +125,8 @@ class NextMeetingNotes extends StatelessWidget {
   const NextMeetingNotes({
     Key? key,
     required TabController tabController,
-  }) : _tabController = tabController, super(key: key);
+  })  : _tabController = tabController,
+        super(key: key);
 
   final TabController _tabController;
 
@@ -124,39 +134,32 @@ class NextMeetingNotes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: safeHeight - 50,
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              color: kPrimaryAppColour,
-              child: TabBar(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: kSecondaryAppColour),
-                labelStyle: TextStyle(
-                    fontWeight: FontWeight.w500, fontSize: 16),
-                isScrollable: true,
-                controller: _tabController,
-                tabs: const <Widget>[
-                  Tab(text: 'Appreciations'),
-                  Tab(text: 'Chores'),
-                  Tab(text: 'Plans'),
-                  Tab(text: 'Problems'),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Container(
-                color: kPrimaryAppColour,
-                child: NextNotesTabs(tabController: _tabController),
-              ),
-            ),
-          ]),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Container(
+          color: kPrimaryAppColour,
+          child: TabBar(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: kSecondaryAppColour),
+            labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            isScrollable: true,
+            controller: _tabController,
+            tabs: const <Widget>[
+              Tab(text: 'Appreciations'),
+              Tab(text: 'Chores'),
+              Tab(text: 'Plans'),
+              Tab(text: 'Problems'),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Container(
+            color: kPrimaryAppColour,
+            child: NextNotesTabs(tabController: _tabController),
+          ),
+        ),
+      ]),
     );
   }
 }
-
-
-
-
