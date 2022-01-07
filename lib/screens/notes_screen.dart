@@ -6,7 +6,9 @@ import 'package:kokoro/screens/drawer.dart';
 import 'package:kokoro/widgets/next_meeting_card.dart';
 import 'package:kokoro/widgets/next_notes_panel.dart';
 import 'package:flutter/services.dart';
-
+import 'package:provider/provider.dart';
+import 'package:kokoro/models/user.dart';
+import 'package:kokoro/services/user_services.dart';
 
 class NotesScreen extends StatefulWidget {
   static const String id = 'notes_screen';
@@ -47,48 +49,63 @@ class _NotesScreenState extends State<NotesScreen>
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: kPrimaryBackgroundColour, // navigation bar color
     ));
+    // Get firebase user for the uid
     return ProgressHUD(
       child: Builder(builder: (context) {
-        return Scaffold(
-          floatingActionButton: FloatingActionButton(
-              backgroundColor: kSecondaryAppColour,
-              child: Icon(Icons.add, size: 40),
-              onPressed: () {
-                // showModalBottomSheet(
-                //   context: context,
-                //   builder: (context) => AddTaskScreen(),
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(20.0),
-                //   ),
-                // );
-              }),
-          backgroundColor: kPrimaryBackgroundColour,
-          drawer: MainDrawer(auth: _auth),
-          appBar: AppBar(
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Kokoro',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+        final user = Provider.of<User>(context);
+        return StreamProvider<AppUser?>(
+          create: (context) => userCollection()
+              .doc(user.uid)
+              .snapshots()
+              .map((snapshot) => documentSnapshotToAppUser(snapshot)),
+          initialData: null,
+          builder: (context, snapshot) {
+            return Builder(
+              builder: (context) {
+                return Scaffold(
+                  floatingActionButton: FloatingActionButton(
+                      backgroundColor: kSecondaryAppColour,
+                      child: Icon(Icons.add, size: 40),
+                      onPressed: () {
+                        // showModalBottomSheet(
+                        //   context: context,
+                        //   builder: (context) => AddTaskScreen(),
+                        //   shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(20.0),
+                        //   ),
+                        // );
+                      }),
+                  backgroundColor: kPrimaryBackgroundColour,
+                  drawer: MainDrawer(auth: _auth),
+                  appBar: AppBar(
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Kokoro',
+                            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                          ),
+                          Text(
+                            'Relationship Meetings',
+                            style: TextStyle(fontSize: 14),
+                          )
+                        ],
+                      ),
+                      centerTitle: false,
+                      backgroundColor: kPrimaryAppColour,
+                      elevation:  isTopOfScreen ? 0 : 1),
+                  body: ListView(
+                      controller: _scrollController,
+                    physics: const ClampingScrollPhysics(),
+                    children: <Widget>[
+                      NextMeetingCard(),
+                      NextMeetingNotes(tabController: _tabController),
+                    ],
                   ),
-                  Text(
-                    'Relationship Meetings',
-                    style: TextStyle(fontSize: 14),
-                  )
-                ],
-              ),
-              centerTitle: false,
-              backgroundColor: kPrimaryAppColour,
-              elevation:  isTopOfScreen ? 0 : 1),
-          body: ListView(
-              controller: _scrollController,
-            physics: const ClampingScrollPhysics(),
-            children: <Widget>[
-              NextMeetingCard(),
-              NextMeetingNotes(tabController: _tabController),
-            ],
-          ),
+                );
+              }
+            );
+          }
         );
       }),
     );
