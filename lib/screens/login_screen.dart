@@ -5,6 +5,7 @@ import 'package:kokoro/login_utils.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/services.dart';
+import 'package:kokoro/models/user.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -69,6 +70,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         progress?.show();
                         try {
                           UserCredential user = await signInWithGoogle();
+                          saveUserToFirestore(user);
+
                         } catch (e) {
                           _errorMessage = e.toString();
                         }
@@ -81,6 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             progress?.show();
                             try {
                               UserCredential user = await signInWithFacebook();
+                              saveUserToFirestore(user);
                             } catch (e) {
                               _errorMessage = e.toString();
                             }
@@ -96,6 +100,18 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void saveUserToFirestore(UserCredential user) {
+    User firebaseUser = user.user!;
+    // Update the user table in Firestore database
+    AppUser appUser = AppUser(
+      uid: firebaseUser.uid,
+      email: firebaseUser.email,
+      displayName: firebaseUser.displayName,
+      photoURL: firebaseUser.photoURL,
+    );
+    appUser.saveUserToFireStore(profile: appUser.appUserToJson());
   }
 
   Widget _buildLoginMessage() => Container(

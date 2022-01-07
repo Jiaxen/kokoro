@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'constants.dart';
+import 'package:kokoro/models/user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
