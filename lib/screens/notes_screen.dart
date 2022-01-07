@@ -27,8 +27,9 @@ class _NotesScreenState extends State<NotesScreen>
   @override
   void initState() {
     super.initState();
+    // Setup the tab controller
     _tabController = TabController(length: 4, vsync: this);
-    // Setup the scroll listener.
+    // Setup the scroll listener to determine if at top of page
     _scrollController.addListener(() {
       setState(() {
         if (_scrollController.position.pixels == 0) {
