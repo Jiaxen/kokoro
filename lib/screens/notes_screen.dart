@@ -71,7 +71,7 @@ class _NotesScreenState extends State<NotesScreen>
                 return Scaffold(
                   floatingActionButton: FloatingActionButton(
                       backgroundColor: kSecondaryAppColour,
-                      child: Icon(Icons.add, size: 40),
+                      child: const Icon(Icons.add, size: 40),
                       onPressed: () {
                         // showModalBottomSheet(
                         //   context: context,
@@ -84,7 +84,10 @@ class _NotesScreenState extends State<NotesScreen>
                   backgroundColor: kPrimaryBackgroundColour,
                   drawer: MainDrawer(auth: _auth),
                   appBar: AppBar(
-                    leading: buildUserAvatar(appUser?.photoURL),
+                    actions: [Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: buildUserAvatar(appUser?.photoURL),
+                    )],
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
@@ -96,7 +99,7 @@ class _NotesScreenState extends State<NotesScreen>
                         Text(
                           'Relationship Meetings',
                           style: TextStyle(fontSize: 14),
-                        )
+                        ),
                       ],
                     ),
                     centerTitle: false,
@@ -138,11 +141,11 @@ class NextMeetingNotes extends StatelessWidget {
         Container(
           color: kPrimaryAppColour,
           child: TabBar(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: kSecondaryAppColour),
-            labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            labelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
             isScrollable: true,
             controller: _tabController,
             tabs: const <Widget>[
