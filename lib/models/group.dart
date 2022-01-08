@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 class Group extends ChangeNotifier{
   final String groupId;
   String groupName;
-  List<String> memberNames;
+  List<String> members;
   List<String> invitedMembers;
   DateTime createdTime;
 
@@ -11,7 +11,7 @@ class Group extends ChangeNotifier{
   Group({
     required this.groupId,
     required this.groupName,
-    required this.memberNames,
+    required this.members,
     required this.invitedMembers,
     required this.createdTime,
   });
@@ -19,7 +19,7 @@ class Group extends ChangeNotifier{
   /// Serializes this [Group] into a JSON object.
   Map<String, dynamic> toJson() => {
     'groupName': groupName,
-    'memberNames': memberNames,
+    'memberNames': members,
     'invitedMembers': invitedMembers,
     'createdTime': createdTime,
   };
