@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-// Naming this class AppUser to differentiate from firebase's User class
+/// Naming this class AppUser to differentiate from firebase's [User] class
 class AppUser {
   final String uid;
   String? email;
