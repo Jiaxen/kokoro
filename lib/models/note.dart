@@ -5,7 +5,7 @@ class Note extends ChangeNotifier {
   String content;
   NoteType noteType;
   NoteState noteState;
-  String meetingId;
+  String? meetingId;
   String groupId;
   String sentBy;
   DateTime createdTime;
@@ -16,7 +16,7 @@ class Note extends ChangeNotifier {
     required this.content,
     required this.noteType,
     required this.noteState,
-    required this.meetingId,
+    this.meetingId,
     required this.groupId,
     required this.sentBy,
     required this.createdTime,
@@ -34,6 +34,29 @@ class Note extends ChangeNotifier {
     'createdTime': createdTime,
     'lastModifiedTime': lastModifiedTime,
   };
+
+  /// Update this note with specified properties.
+  ///
+  /// If [updateTimestamp] is `true`, which is the default,
+  /// `modifiedAt` will be updated to `DateTime.now()`.
+  Note updateWith({
+    String? content,
+    NoteState? noteState,
+    NoteType? noteType,
+    String? meetingId,
+    String? groupId,
+    bool updateTimestamp = true,
+  }) {
+    if (content != null) this.content = content;
+    if (noteState != null) this.noteState = noteState;
+    if (noteType != null) this.noteType = noteType;
+    if (meetingId != null) this.meetingId = meetingId;
+    if (groupId != null) this.groupId = groupId;
+    if (updateTimestamp) lastModifiedTime = DateTime.now();
+    notifyListeners();
+    return this;
+  }
+
 }
 
 enum NoteType {
