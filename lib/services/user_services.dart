@@ -2,15 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kokoro/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-AppUser? documentSnapshotToAppUser(DocumentSnapshot documentSnapshot) {
-  return documentSnapshot.exists
-      ? AppUser(
+AppUser documentSnapshotToAppUser(DocumentSnapshot documentSnapshot) {
+  return AppUser(
           uid: documentSnapshot.id,
           email: documentSnapshot.get('email'),
           photoURL: documentSnapshot.get('photoURL'),
           displayName: documentSnapshot.get('displayName'),
-          currentGroup: documentSnapshot.get('currentGroup'))
-      : null;
+          currentGroup: documentSnapshot.get('currentGroup'));
 }
 
 Future<dynamic> saveUserToFireStore(AppUser appUser) async {

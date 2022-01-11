@@ -15,6 +15,17 @@ class AppUser {
       this.photoURL,
       this.currentGroup});
 
+  static AppUser initial = AppUser(
+      uid: '',
+      email: null,
+      displayName: null,
+      photoURL: null,
+      currentGroup: null);
+
+  bool isInitial(){
+    return uid == '' ? true : false;
+  }
+
   Map<String, dynamic> appUserToJson() {
     return {
       'uid': uid,
