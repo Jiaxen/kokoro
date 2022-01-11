@@ -60,13 +60,13 @@ class _NotesScreenState extends State<NotesScreen>
       child: Builder(
         builder: (context) {
           final user = Provider.of<User>(context);
-          return StreamProvider<AppUser?>(
+          return StreamProvider<AppUser>(
             create: (context) => userCollection()
                 .doc(user.uid)
                 .snapshots()
                 .map((snapshot) => documentSnapshotToAppUser(snapshot)),
-            initialData: null,
-            child: Consumer<AppUser?>(
+            initialData: AppUser.initial,
+            child: Consumer<AppUser>(
               builder: (context, appUser, _) {
                 return Scaffold(
                   floatingActionButton: FloatingActionButton(
@@ -86,7 +86,7 @@ class _NotesScreenState extends State<NotesScreen>
                   appBar: AppBar(
                     actions: [Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: buildUserAvatar(appUser?.photoURL),
+                      child: buildUserAvatar(appUser.photoURL),
                     )],
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,21 +140,7 @@ class NextMeetingNotes extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Container(
           color: kPrimaryAppColour,
-          child: TabBar(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: kSecondaryAppColour),
-            labelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-            isScrollable: true,
-            controller: _tabController,
-            tabs: const <Widget>[
-              Tab(text: 'Appreciations'),
-              Tab(text: 'Chores'),
-              Tab(text: 'Plans'),
-              Tab(text: 'Problems'),
-            ],
-          ),
+          child: NextNotesTabBar(tabController: _tabController),
         ),
         Expanded(
           child: Container(
