@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class Note extends ChangeNotifier {
   final String? id;
   String content;
-  NoteType noteType;
   NoteState noteState;
+  NoteType noteType;
   String? meetingId;
   String groupId;
   String sentBy;
@@ -14,8 +14,8 @@ class Note extends ChangeNotifier {
   Note({
     this.id,
     required this.content,
-    required this.noteType,
     required this.noteState,
+    required this.noteType,
     this.meetingId,
     required this.groupId,
     required this.sentBy,
@@ -23,7 +23,7 @@ class Note extends ChangeNotifier {
     required this.lastModifiedTime,
   });
 
-  /// Serializes this note into a JSON object.
+  /// Serializes this [Note] into a JSON object.
   Map<String, dynamic> toJson() => {
     'content': content,
     'noteState': noteState,
@@ -35,7 +35,7 @@ class Note extends ChangeNotifier {
     'lastModifiedTime': lastModifiedTime,
   };
 
-  /// Update this note with specified properties.
+  /// Update this [Note] with specified properties.
   ///
   /// If [updateTimestamp] is `true`, which is the default,
   /// `modifiedAt` will be updated to `DateTime.now()`.
@@ -56,7 +56,6 @@ class Note extends ChangeNotifier {
     notifyListeners();
     return this;
   }
-
 }
 
 enum NoteType {
@@ -65,7 +64,9 @@ enum NoteType {
   plans,
   challenges,
 }
+
 enum NoteState {
+  archive,
   current,
   past,
 }
