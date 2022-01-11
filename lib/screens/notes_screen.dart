@@ -91,6 +91,7 @@ class _NotesScreenState extends State<NotesScreen>
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
+                        SizedBox(height: 5),
                         Text(
                           'Kokoro',
                           style: TextStyle(
