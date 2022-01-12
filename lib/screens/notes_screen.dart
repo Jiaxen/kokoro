@@ -24,28 +24,12 @@ class _NotesScreenState extends State<NotesScreen>
     with TickerProviderStateMixin {
   final _auth = FirebaseAuth.instance;
   late TabController _tabController;
-  final _scrollController = ScrollController();
-  bool isTopOfScreen = true;
 
   @override
   void initState() {
     super.initState();
     // Setup the tab controller
     _tabController = TabController(length: 4, vsync: this);
-    // Setup the scroll listener to determine if at top of page
-    _scrollController.addListener(
-      () {
-        setState(
-          () {
-            if (_scrollController.position.pixels == 0) {
-              isTopOfScreen = true;
-            } else {
-              isTopOfScreen = false;
-            }
-          },
-        );
-      },
-    );
   }
 
   @override
@@ -81,71 +65,48 @@ class _NotesScreenState extends State<NotesScreen>
                           //   ),
                           // );
                         }),
-                    backgroundColor: kPrimaryBackgroundColour,
+                    backgroundColor: kPrimaryAppColour,
                     drawer: MainDrawer(auth: _auth),
-                    // appBar: AppBar(
-                    //   actions: [
-                    //     Padding(
-                    //       padding: const EdgeInsets.all(8.0),
-                    //       child: buildUserAvatar(appUser.photoURL),
-                    //     )
-                    //   ],
-                    //   title: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: const [
-                    //       SizedBox(height: 5),
-                    //       Text(
-                    //         'Kokoro',
-                    //         style: TextStyle(
-                    //             fontSize: 28, fontWeight: FontWeight.w700),
-                    //       ),
-                    //       Text(
-                    //         'Relationship Meetings',
-                    //         style: TextStyle(fontSize: 14),
-                    //       ),
-                    //     ],
-                    //   ),
-                    //   centerTitle: false,
-                    //   backgroundColor: kPrimaryAppColour,
-                    //   elevation: isTopOfScreen ? 0 : 1,
-                    // ),
-                    body: CustomScrollView(
-                      physics: ClampingScrollPhysics(),
-                        slivers: <Widget>[
-                       SliverAppBar(
-                        pinned: true,
-                        snap: false,
-                        floating: false,
-                        expandedHeight: 60.0,
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              SizedBox(height: 5),
-                              Text(
-                                'Kokoro',
-                                style: TextStyle(
-                                    fontSize: 28, fontWeight: FontWeight.w700),
+                    body: Container(
+                      child: CustomScrollView(
+                          physics: ClampingScrollPhysics(),
+                          slivers: <Widget>[
+                            SliverAppBar(
+                              pinned: true,
+                              snap: false,
+                              floating: false,
+                              expandedHeight: 60.0,
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  SizedBox(height: 5),
+                                  Text(
+                                    'Kokoro',
+                                    style: TextStyle(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  Text(
+                                    'Relationship Meetings',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  SizedBox(height: 5),
+                                ],
                               ),
-                              Text(
-                                'Relationship Meetings',
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              SizedBox(height: 5),
-                            ],
-                          ),
-                           actions: [
-                             Padding(
-                               padding: const EdgeInsets.all(8.0),
-                               child: buildUserAvatar(appUser.photoURL),
-                             )
-                           ],
-                          centerTitle: false,
-                          backgroundColor: kPrimaryAppColour,
-                          elevation: isTopOfScreen ? 0 : 1,
-                      ),
-                      NextMeetingCard(),
-                      NextMeetingNotes(tabController: _tabController)
-                    ]));
+                              actions: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: buildUserAvatar(appUser.photoURL),
+                                )
+                              ],
+                              centerTitle: false,
+                              backgroundColor: kPrimaryAppColour,
+                            ),
+                            NextMeetingCard(),
+                            NextNotesTabBar(tabController: _tabController),
+                            NextMeetingNotes(tabController: _tabController),
+                          ]),
+                    ));
               },
             ),
           );
@@ -169,11 +130,8 @@ class NextMeetingNotes extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Container(
         height: safeHeight - 50,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Container(
-            color: kPrimaryAppColour,
-            child: NextNotesTabBar(tabController: _tabController),
-          ),
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Expanded(
             child: Container(
               color: kPrimaryAppColour,

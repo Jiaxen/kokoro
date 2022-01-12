@@ -16,19 +16,24 @@ class NextNotesTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TabBar(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      indicator: BoxDecoration(
-          borderRadius: BorderRadius.circular(12), color: kSecondaryAppColour),
-      labelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-      isScrollable: true,
-      controller: _tabController,
-      tabs: const <Widget>[
-        Tab(text: 'Appreciations'),
-        Tab(text: 'Chores'),
-        Tab(text: 'Plans'),
-        Tab(text: 'Challenges'),
-      ],
+    return SliverToBoxAdapter(
+      child: Container(
+        color: kPrimaryAppColour,
+        child: TabBar(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          indicator: BoxDecoration(
+              borderRadius: BorderRadius.circular(12), color: kSecondaryAppColour),
+          labelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+          isScrollable: true,
+          controller: _tabController,
+          tabs: const <Widget>[
+            Tab(text: 'Appreciations'),
+            Tab(text: 'Chores'),
+            Tab(text: 'Plans'),
+            Tab(text: 'Challenges'),
+          ],
+        ),
+      ),
     );
   }
 }
