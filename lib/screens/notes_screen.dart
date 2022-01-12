@@ -69,53 +69,83 @@ class _NotesScreenState extends State<NotesScreen>
             child: Consumer<AppUser>(
               builder: (context, appUser, _) {
                 return Scaffold(
-                  floatingActionButton: FloatingActionButton(
-                      backgroundColor: kSecondaryAppColour,
-                      child: const Icon(Icons.add, size: 40),
-                      onPressed: () {
-                        // showModalBottomSheet(
-                        //   context: context,
-                        //   builder: (context) => AddTaskScreen(),
-                        //   shape: RoundedRectangleBorder(
-                        //     borderRadius: BorderRadius.circular(20.0),
-                        //   ),
-                        // );
-                      }),
-                  backgroundColor: kPrimaryBackgroundColour,
-                  drawer: MainDrawer(auth: _auth),
-                  appBar: AppBar(
-                    actions: [Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: buildUserAvatar(appUser.photoURL),
-                    )],
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        SizedBox(height: 5),
-                        Text(
-                          'Kokoro',
-                          style: TextStyle(
-                              fontSize: 28, fontWeight: FontWeight.w700),
-                        ),
-                        Text(
-                          'Relationship Meetings',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
-                    centerTitle: false,
-                    backgroundColor: kPrimaryAppColour,
-                    elevation: isTopOfScreen ? 0 : 1,
-                  ),
-                  body: ListView(
-                    controller: _scrollController,
-                    physics: const ClampingScrollPhysics(),
-                    children: <Widget>[
+                    floatingActionButton: FloatingActionButton(
+                        backgroundColor: kSecondaryAppColour,
+                        child: const Icon(Icons.add, size: 40),
+                        onPressed: () {
+                          // showModalBottomSheet(
+                          //   context: context,
+                          //   builder: (context) => AddTaskScreen(),
+                          //   shape: RoundedRectangleBorder(
+                          //     borderRadius: BorderRadius.circular(20.0),
+                          //   ),
+                          // );
+                        }),
+                    backgroundColor: kPrimaryBackgroundColour,
+                    drawer: MainDrawer(auth: _auth),
+                    // appBar: AppBar(
+                    //   actions: [
+                    //     Padding(
+                    //       padding: const EdgeInsets.all(8.0),
+                    //       child: buildUserAvatar(appUser.photoURL),
+                    //     )
+                    //   ],
+                    //   title: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: const [
+                    //       SizedBox(height: 5),
+                    //       Text(
+                    //         'Kokoro',
+                    //         style: TextStyle(
+                    //             fontSize: 28, fontWeight: FontWeight.w700),
+                    //       ),
+                    //       Text(
+                    //         'Relationship Meetings',
+                    //         style: TextStyle(fontSize: 14),
+                    //       ),
+                    //     ],
+                    //   ),
+                    //   centerTitle: false,
+                    //   backgroundColor: kPrimaryAppColour,
+                    //   elevation: isTopOfScreen ? 0 : 1,
+                    // ),
+                    body: CustomScrollView(
+                      physics: ClampingScrollPhysics(),
+                        slivers: <Widget>[
+                       SliverAppBar(
+                        pinned: true,
+                        snap: false,
+                        floating: false,
+                        expandedHeight: 60.0,
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              SizedBox(height: 5),
+                              Text(
+                                'Kokoro',
+                                style: TextStyle(
+                                    fontSize: 28, fontWeight: FontWeight.w700),
+                              ),
+                              Text(
+                                'Relationship Meetings',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              SizedBox(height: 5),
+                            ],
+                          ),
+                           actions: [
+                             Padding(
+                               padding: const EdgeInsets.all(8.0),
+                               child: buildUserAvatar(appUser.photoURL),
+                             )
+                           ],
+                          centerTitle: false,
+                          backgroundColor: kPrimaryAppColour,
+                          elevation: isTopOfScreen ? 0 : 1,
+                      ),
                       NextMeetingCard(),
-                      NextMeetingNotes(tabController: _tabController),
-                    ],
-                  ),
-                );
+                      // NextMeetingNotes(tabController: _tabController)
+                    ]));
               },
             ),
           );
