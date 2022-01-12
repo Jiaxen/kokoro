@@ -144,7 +144,7 @@ class _NotesScreenState extends State<NotesScreen>
                           elevation: isTopOfScreen ? 0 : 1,
                       ),
                       NextMeetingCard(),
-                      // NextMeetingNotes(tabController: _tabController)
+                      NextMeetingNotes(tabController: _tabController)
                     ]));
               },
             ),
@@ -166,20 +166,22 @@ class NextMeetingNotes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: safeHeight - 50,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Container(
-          color: kPrimaryAppColour,
-          child: NextNotesTabBar(tabController: _tabController),
-        ),
-        Expanded(
-          child: Container(
+    return SliverToBoxAdapter(
+      child: Container(
+        height: safeHeight - 50,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Container(
             color: kPrimaryAppColour,
-            child: NextNotesTabs(tabController: _tabController),
+            child: NextNotesTabBar(tabController: _tabController),
           ),
-        ),
-      ]),
+          Expanded(
+            child: Container(
+              color: kPrimaryAppColour,
+              child: NextNotesTabs(tabController: _tabController),
+            ),
+          ),
+        ]),
+      ),
     );
   }
 }
