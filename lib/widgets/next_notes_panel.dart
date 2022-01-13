@@ -22,8 +22,10 @@ class NextNotesTabBar extends StatelessWidget {
         child: TabBar(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(12), color: kSecondaryAppColour),
-          labelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+              borderRadius: BorderRadius.circular(12),
+              color: kSecondaryAppColour),
+          labelStyle:
+              const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
           isScrollable: true,
           controller: _tabController,
           tabs: const <Widget>[
@@ -108,28 +110,32 @@ class NextNotesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-      child: Center(
-        child: ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: notes.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              height: 50,
-              child: Column(
-                children: [
-                  Text('note: ${notes[index].content}'),
-                  Text('sent by: ${notes[index].sentBy}'),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: Builder(builder: (BuildContext context) {
+        return CustomScrollView(slivers: [
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return ListTile(
+                  title: Text('note: ${notes[index].content}')
+                );
+              },childCount: notes.length,
+            ),
+          ),
+          // SliverFillRemaining(
+          //   child: Container(
+          //     color: Colors.blue[100],
+          //     child: Icon(
+          //       Icons.sentiment_very_satisfied,
+          //       size: 75,
+          //       color: Colors.blue[900],
+          //     ),
+          //   ),
+          // ),
+        ]);
+      }),
     );
   }
 }

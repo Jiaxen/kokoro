@@ -68,9 +68,10 @@ class _NotesScreenState extends State<NotesScreen>
                     backgroundColor: kPrimaryAppColour,
                     drawer: MainDrawer(auth: _auth),
                     body: Container(
-                      child: CustomScrollView(
+                      child: NestedScrollView(
                           physics: ClampingScrollPhysics(),
-                          slivers: <Widget>[
+                        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                          return <Widget>[
                             SliverAppBar(
                               pinned: true,
                               snap: false,
@@ -104,8 +105,11 @@ class _NotesScreenState extends State<NotesScreen>
                             ),
                             NextMeetingCard(),
                             NextNotesTabBar(tabController: _tabController),
+                          ];
+                        },
+                          body:
                             NextMeetingNotes(tabController: _tabController),
-                          ]),
+                          ),
                     ));
               },
             ),
@@ -127,19 +131,9 @@ class NextMeetingNotes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-        height: safeHeight - 50,
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Expanded(
-            child: Container(
-              color: kPrimaryAppColour,
-              child: NextNotesTabs(tabController: _tabController),
-            ),
-          ),
-        ]),
-      ),
+    return Container(
+      color: kPrimaryBackgroundColour,
+      child: NextNotesTabs(tabController: _tabController),
     );
   }
 }
