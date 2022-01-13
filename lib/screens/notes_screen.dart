@@ -132,7 +132,7 @@ class NextMeetingNotes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: kPrimaryBackgroundColour,
+      color: kPrimaryAppColour,
       child: NextNotesTabs(tabController: _tabController),
     );
   }

@@ -110,32 +110,31 @@ class NextNotesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Builder(builder: (BuildContext context) {
-        return CustomScrollView(slivers: [
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return ListTile(
-                  title: Text('note: ${notes[index].content}')
-                );
-              },childCount: notes.length,
+    return Container(
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+      child: SafeArea(
+        // top: false,
+        // bottom: false,
+        child: Builder(builder: (BuildContext context) {
+          return CustomScrollView(slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.only(top:5, left: 5, right: 5, bottom: 25.0),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return ListTile(
+                      title: Text('note: ${notes[index].content}')
+                    );
+                  },childCount: notes.length,
+                ),
+              ),
             ),
-          ),
-          // SliverFillRemaining(
-          //   child: Container(
-          //     color: Colors.blue[100],
-          //     child: Icon(
-          //       Icons.sentiment_very_satisfied,
-          //       size: 75,
-          //       color: Colors.blue[900],
-          //     ),
-          //   ),
-          // ),
-        ]);
-      }),
+          ]);
+        }),
+      ),
     );
   }
 }
