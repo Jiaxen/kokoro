@@ -10,7 +10,6 @@ import 'package:kokoro/widgets/user_image.dart';
 import 'package:provider/provider.dart';
 import 'package:kokoro/models/user.dart';
 import 'package:kokoro/services/user_services.dart';
-import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 
 class NotesScreen extends StatefulWidget {
   static const String id = 'notes_screen';
@@ -68,8 +67,7 @@ class _NotesScreenState extends State<NotesScreen>
                           }),
                       backgroundColor: kPrimaryAppColour,
                       drawer: MainDrawer(auth: _auth),
-                      body: ExtendedNestedScrollView(
-                        onlyOneScrollInBody: true,
+                      body: NestedScrollView(
                         physics: ClampingScrollPhysics(),
                         headerSliverBuilder:
                             (BuildContext context, bool innerBoxIsScrolled) {

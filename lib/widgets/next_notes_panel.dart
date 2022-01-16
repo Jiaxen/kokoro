@@ -114,8 +114,8 @@ class NextNotesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-          color: Colors.white,
+      decoration: BoxDecoration(
+          color: kPrimaryBackgroundColour,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30))),
       child: SafeArea(
@@ -124,12 +124,29 @@ class NextNotesTab extends StatelessWidget {
         child: Builder(builder: (BuildContext context) {
           return
             ListView.builder(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(12),
                 itemCount: notes.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height: 50,
-                    child: Center(child: Text('Entry ${notes[index].content}')),
+                  return Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: kTextBackgroundColour,
+                            borderRadius: BorderRadius.all(Radius.circular(25))),
+                        child: InkWell(
+                            splashColor: Colors.blue.withAlpha(30),
+                            onTap: () {
+                              debugPrint('Card tapped.');
+                            },
+                            child: ListTile(
+                              leading: Icon(Icons.favorite),
+                              title: Text('${notes[index].content}'),
+                              subtitle: Text('${notes[index].createdTime}'),
+                            ),
+                      ),),
+                      SizedBox(height:10),
+                    ],
                   );
                 }
             );
