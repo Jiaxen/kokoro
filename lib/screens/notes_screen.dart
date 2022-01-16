@@ -10,6 +10,7 @@ import 'package:kokoro/widgets/user_image.dart';
 import 'package:provider/provider.dart';
 import 'package:kokoro/models/user.dart';
 import 'package:kokoro/services/user_services.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 
 class NotesScreen extends StatefulWidget {
   static const String id = 'notes_screen';
@@ -53,29 +54,30 @@ class _NotesScreenState extends State<NotesScreen>
             child: Consumer<AppUser>(
               builder: (context, appUser, _) {
                 return Scaffold(
-                    floatingActionButton: FloatingActionButton(
-                        backgroundColor: kSecondaryAppColour,
-                        child: const Icon(Icons.add, size: 40),
-                        onPressed: () {
-                          // showModalBottomSheet(
-                          //   context: context,
-                          //   builder: (context) => AddTaskScreen(),
-                          //   shape: RoundedRectangleBorder(
-                          //     borderRadius: BorderRadius.circular(20.0),
-                          //   ),
-                          // );
-                        }),
-                    backgroundColor: kPrimaryAppColour,
-                    drawer: MainDrawer(auth: _auth),
-                    body: Container(
-                      child: NestedScrollView(
-                          physics: ClampingScrollPhysics(),
-                        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                      floatingActionButton: FloatingActionButton(
+                          backgroundColor: kSecondaryAppColour,
+                          child: const Icon(Icons.add, size: 40),
+                          onPressed: () {
+                            // showModalBottomSheet(
+                            //   context: context,
+                            //   builder: (context) => AddTaskScreen(),
+                            //   shape: RoundedRectangleBorder(
+                            //     borderRadius: BorderRadius.circular(20.0),
+                            //   ),
+                            // );
+                          }),
+                      backgroundColor: kPrimaryAppColour,
+                      drawer: MainDrawer(auth: _auth),
+                      body: ExtendedNestedScrollView(
+                        onlyOneScrollInBody: true,
+                        physics: ClampingScrollPhysics(),
+                        headerSliverBuilder:
+                            (BuildContext context, bool innerBoxIsScrolled) {
                           return <Widget>[
                             SliverAppBar(
-                              pinned: true,
-                              snap: false,
-                              floating: false,
+                              pinned: false,
+                              snap: true,
+                              floating: true,
                               expandedHeight: 60.0,
                               title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,36 +106,22 @@ class _NotesScreenState extends State<NotesScreen>
                               backgroundColor: kPrimaryAppColour,
                             ),
                             NextMeetingCard(),
-                            NextNotesTabBar(tabController: _tabController),
                           ];
                         },
-                          body:
-                            NextMeetingNotes(tabController: _tabController),
+                        body: SafeArea(
+                          child: Column(
+                            children: [
+                              NextNotesTabBar(tabController: _tabController),
+                              NextNotesTabs(tabController: _tabController),
+                            ],
                           ),
-                    ));
+                        ),
+                      ));
               },
             ),
           );
         },
       ),
-    );
-  }
-}
-
-class NextMeetingNotes extends StatelessWidget {
-  const NextMeetingNotes({
-    Key? key,
-    required TabController tabController,
-  })  : _tabController = tabController,
-        super(key: key);
-
-  final TabController _tabController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: kPrimaryAppColour,
-      child: NextNotesTabs(tabController: _tabController),
     );
   }
 }
