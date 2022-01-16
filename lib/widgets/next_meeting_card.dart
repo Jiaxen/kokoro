@@ -13,8 +13,9 @@ class NextMeetingCard extends StatelessWidget {
       child: Container(
         color: kPrimaryAppColour,
         child: Padding(
-          padding: const EdgeInsets.only(left:8.0, right: 8.0, top: 8.0),
+          padding: const EdgeInsets.all(10.0),
           child: Card(
+            margin: EdgeInsets.zero,
             color: kSecondaryAppColour,
             child: ListTile(
               leading:

@@ -67,47 +67,47 @@ class _NotesScreenState extends State<NotesScreen>
                           }),
                       backgroundColor: kPrimaryAppColour,
                       drawer: MainDrawer(auth: _auth),
-                      body: NestedScrollView(
-                        physics: ClampingScrollPhysics(),
-                        headerSliverBuilder:
-                            (BuildContext context, bool innerBoxIsScrolled) {
-                          return <Widget>[
-                            SliverAppBar(
-                              pinned: false,
-                              snap: true,
-                              floating: true,
-                              expandedHeight: 60.0,
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  SizedBox(height: 5),
-                                  Text(
-                                    'Kokoro',
-                                    style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  Text(
-                                    'Relationship Meetings',
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                  SizedBox(height: 5),
+                      body: SafeArea(
+                        child: NestedScrollView(
+                          physics: ClampingScrollPhysics(),
+                          headerSliverBuilder:
+                              (BuildContext context, bool innerBoxIsScrolled) {
+                            return <Widget>[
+                              SliverAppBar(
+                                pinned: false,
+                                snap: true,
+                                floating: true,
+                                expandedHeight: 60.0,
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const [
+                                    SizedBox(height: 10),
+                                    Text(
+                                      'Kokoro',
+                                      style: TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      'Relationship Meetings',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    SizedBox(height: 8),
+                                  ],
+                                ),
+                                actions: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: buildUserAvatar(appUser.photoURL),
+                                  )
                                 ],
+                                centerTitle: false,
+                                backgroundColor: kPrimaryAppColour,
                               ),
-                              actions: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: buildUserAvatar(appUser.photoURL),
-                                )
-                              ],
-                              centerTitle: false,
-                              backgroundColor: kPrimaryAppColour,
-                            ),
-                            NextMeetingCard(),
-                          ];
-                        },
-                        body: SafeArea(
-                          child: Column(
+                              NextMeetingCard(),
+                            ];
+                          },
+                          body: Column(
                             children: [
                               NextNotesTabBar(tabController: _tabController),
                               NextNotesTabs(tabController: _tabController),

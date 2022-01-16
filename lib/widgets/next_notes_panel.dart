@@ -117,41 +117,38 @@ class NextNotesTab extends StatelessWidget {
       decoration: BoxDecoration(
           color: kPrimaryBackgroundColour,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-      child: SafeArea(
-        // top: false,
-        // bottom: false,
-        child: Builder(builder: (BuildContext context) {
-          return
-            ListView.builder(
-                padding: const EdgeInsets.all(12),
-                itemCount: notes.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: kTextBackgroundColour,
-                            borderRadius: BorderRadius.all(Radius.circular(25))),
-                        child: InkWell(
-                            splashColor: Colors.blue.withAlpha(30),
-                            onTap: () {
-                              debugPrint('Card tapped.');
-                            },
-                            child: ListTile(
-                              leading: Icon(Icons.favorite),
-                              title: Text('${notes[index].content}'),
-                              subtitle: Text('${notes[index].createdTime}'),
-                            ),
-                      ),),
-                      SizedBox(height:10),
-                    ],
-                  );
-                }
-            );
-        }),
-      ),
+              topLeft: Radius.circular(25), topRight: Radius.circular(25))),
+      child: Builder(builder: (BuildContext context) {
+        return
+          ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+              itemCount: notes.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    SizedBox(height:10),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: kTextBackgroundColour,
+                          borderRadius: BorderRadius.all(Radius.circular(25))),
+                      child: InkWell(
+                          splashColor: Colors.blue.withAlpha(30),
+                          onTap: () {
+                            debugPrint('Card tapped.');
+                          },
+                          child: ListTile(
+                            leading: Icon(Icons.favorite),
+                            title: Text('${notes[index].content}'),
+                            subtitle: Text('${notes[index].createdTime}'),
+                          ),
+                    ),),
+                    SizedBox(height:10),
+                  ],
+                );
+              }
+          );
+      }),
     );
   }
 }
