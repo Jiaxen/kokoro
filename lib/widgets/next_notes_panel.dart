@@ -25,12 +25,7 @@ class NextNotesTabBar extends StatelessWidget {
           const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
       isScrollable: true,
       controller: _tabController,
-      tabs: const <Widget>[
-        Tab(text: 'Appreciations'),
-        Tab(text: 'Chores'),
-        Tab(text: 'Plans'),
-        Tab(text: 'Challenges'),
-      ],
+      tabs: noteTypes.map((e) => Tab(text: e)).toList(),
     );
   }
 }

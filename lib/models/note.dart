@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../utils.dart';
+
 class Note extends ChangeNotifier {
-  final String? id;
+  String? id;
   String content;
   NoteState noteState;
   NoteType noteType;
@@ -70,3 +72,5 @@ enum NoteState {
   current,
   past,
 }
+
+List<String> noteTypes = enumToCapitalisedList(NoteType.values);
