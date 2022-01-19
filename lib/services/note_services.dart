@@ -31,8 +31,14 @@ extension NoteDocument on DocumentSnapshot {
   );
 }
 
+Future<dynamic> saveNoteToFireStore(Note note, String groupId) async {
+  final notesCol = notesCollection(groupId);
+  Map<String, dynamic> noteAsJson = note.noteToJson();
+  note.id == null ? notesCol.add(noteAsJson) : notesCol.doc(note.id).set(noteAsJson, SetOptions(merge: true));
+}
+
 /// Returns reference to collection for users.
-CollectionReference NotesCollection(String groupId) =>
+CollectionReference notesCollection(String groupId) =>
     FirebaseFirestore.instance
     .collection('group')
     .doc(groupId)

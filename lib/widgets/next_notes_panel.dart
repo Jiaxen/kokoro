@@ -59,7 +59,7 @@ class NextNotesTabs extends StatelessWidget {
       );
     } else {
       return StreamProvider<List<Note>>(
-        create: (context) => NotesCollection(user.currentGroup!)
+        create: (context) => notesCollection(user.currentGroup!)
             .where('sentBy', isEqualTo: user.uid)
             .where('noteState', isEqualTo: 'current')
             .snapshots()

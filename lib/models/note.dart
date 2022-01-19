@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../utils.dart';
@@ -26,15 +27,15 @@ class Note extends ChangeNotifier {
   });
 
   /// Serializes this [Note] into a JSON object.
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> noteToJson() => {
     'content': content,
-    'noteState': noteState,
-    'noteType': noteType,
+    'noteState': enumToString(noteState),
+    'noteType': enumToString(noteType),
     'meetingId': meetingId,
     'groupId': groupId,
     'sentBy': sentBy,
-    'createdTime': createdTime,
-    'lastModifiedTime': lastModifiedTime,
+    'createdTime': Timestamp.fromDate(createdTime),
+    'lastModifiedTime': Timestamp.fromDate(lastModifiedTime),
   };
 
   /// Update this [Note] with specified properties.

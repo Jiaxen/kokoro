@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kokoro/constants.dart';
 import 'package:kokoro/models/note.dart';
+import 'package:kokoro/services/note_services.dart';
 import 'package:provider/provider.dart';
 
 import '../utils.dart';
@@ -18,10 +19,11 @@ class EditNoteScreen extends StatefulWidget {
 
 class _EditNoteScreenState extends State<EditNoteScreen> {
   String? dropdownValue;
+  String? messageValue;
 
   @override
   void initState() {
-    dropdownValue = enumToString(widget.note.noteType);
+    dropdownValue = enumToCapitalisedString(widget.note.noteType);
 
     super.initState();
   }
@@ -80,11 +82,10 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                 SizedBox(height: 20),
                 TextField(
                     autofocus: true,
-                    onEditingComplete: () {
-                      SystemChannels.textInput.invokeMethod('TextInput.show');
-                    },
-                    onSubmitted: (string) {
-                      SystemChannels.textInput.invokeMethod('TextInput.show');
+                    onChanged: (value) {
+                      setState(() {
+                        messageValue = value;
+                      });
                     },
                     decoration: InputDecoration(
                       focusColor: kPrimaryAppColour,
@@ -117,8 +118,13 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                       )),
                     ),
                     onPressed: () {
-                      
-                      //  Save to firestore
+                      if (messageValue != null) {
+                        if (messageValue!.isNotEmpty){
+                          widget.note.content = messageValue!;
+                          widget.note.lastModifiedTime = DateTime.now();
+                          saveNoteToFireStore(widget.note, widget.note.groupId);
+                        }
+                    }
                       Navigator.pop(context);
                     },
                     child: Text('Save note'),

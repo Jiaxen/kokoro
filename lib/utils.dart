@@ -11,7 +11,9 @@ extension StringExtension on String {
 }
 
 List<String> enumToCapitalisedList<T>(Iterable<T> enumeration) {
-  return enumeration.map((e) => enumToString(e)).toList();
+  return enumeration.map((e) => enumToCapitalisedString(e)).toList();
 }
 
-String enumToString(element) => element.toString().split(".").last.capitalize();
+String enumToString(element) => element.toString().split(".").last;
+
+String enumToCapitalisedString(element) => enumToString(element).capitalize();
