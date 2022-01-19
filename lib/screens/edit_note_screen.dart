@@ -17,10 +17,16 @@ class EditNoteScreen extends StatefulWidget {
 }
 
 class _EditNoteScreenState extends State<EditNoteScreen> {
+  String? dropdownValue;
 
   @override
+  void initState() {
+    dropdownValue = enumToString(widget.note.noteType);
+
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    String dropdownValue = enumToString(widget.note.noteType);
     return SingleChildScrollView(
       child: AlertDialog(
         insetPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),

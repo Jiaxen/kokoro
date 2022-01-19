@@ -17,7 +17,7 @@ class NextNotesTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TabBar(
-      padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 5),
+      padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
       indicator: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: kSecondaryAppColour),
