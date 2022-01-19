@@ -66,6 +66,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                   ),
                   onChanged: (String? newValue) {
                     setState(() {
+                      widget.note.noteType = enumFromString(NoteType.values, dropdownValue!)!;
                       dropdownValue = newValue!;
                     });
                   },
@@ -116,6 +117,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                       )),
                     ),
                     onPressed: () {
+                      
                       //  Save to firestore
                       Navigator.pop(context);
                     },
