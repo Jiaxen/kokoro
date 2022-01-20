@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kokoro/models/note.dart';
+import 'package:kokoro/screens/edit_note_screen.dart';
 import 'package:provider/provider.dart';
 import '../constants.dart';
 import 'package:kokoro/models/user.dart';
@@ -130,7 +131,11 @@ class NextNotesTab extends StatelessWidget {
                       child: InkWell(
                           splashColor: Colors.blue.withAlpha(30),
                           onTap: () {
-                            debugPrint('Card tapped.');
+                            showDialog(
+                              context: context,
+                              builder: (context) => EditNoteScreen(
+                                  note: notes[index]),
+                            );
                           },
                           child: ListTile(
                             leading: Icon(Icons.favorite),

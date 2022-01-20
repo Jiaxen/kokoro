@@ -19,14 +19,24 @@ class EditNoteScreen extends StatefulWidget {
 
 class _EditNoteScreenState extends State<EditNoteScreen> {
   String? dropdownValue;
-  String? messageValue;
+  // current value of the TextField.
+  final myController = TextEditingController();
 
   @override
   void initState() {
     dropdownValue = enumToCapitalisedString(widget.note.noteType);
-
+    myController.text = widget.note.content;
     super.initState();
   }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    myController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -81,12 +91,8 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                 ),
                 SizedBox(height: 20),
                 TextField(
+                    controller: myController,
                     autofocus: true,
-                    onChanged: (value) {
-                      setState(() {
-                        messageValue = value;
-                      });
-                    },
                     decoration: InputDecoration(
                       focusColor: kPrimaryAppColour,
                       focusedBorder: OutlineInputBorder(
@@ -118,13 +124,11 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                       )),
                     ),
                     onPressed: () {
-                      if (messageValue != null) {
-                        if (messageValue!.isNotEmpty){
-                          widget.note.content = messageValue!;
+                        if (myController.text.isNotEmpty){
+                          widget.note.content = myController.text;
                           widget.note.lastModifiedTime = DateTime.now();
                           saveNoteToFireStore(widget.note, widget.note.groupId);
                         }
-                    }
                       Navigator.pop(context);
                     },
                     child: Text('Save note'),
