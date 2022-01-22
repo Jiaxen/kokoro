@@ -6,6 +6,7 @@ import 'package:kokoro/services/note_services.dart';
 import 'package:provider/provider.dart';
 
 import '../utils.dart';
+import 'notes_screen.dart';
 
 class EditNoteScreen extends StatefulWidget {
   Note note;
@@ -19,13 +20,12 @@ class EditNoteScreen extends StatefulWidget {
 
 class _EditNoteScreenState extends State<EditNoteScreen> {
   String? dropdownValue;
-  // current value of the TextField.
   final myController = TextEditingController();
 
   @override
   void initState() {
     dropdownValue = enumToCapitalisedString(widget.note.noteType);
-    myController.text = widget.note.content;
+    myController.text = widget.note.content; // If note already has content
     super.initState();
   }
 
@@ -77,9 +77,10 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                     color: kPrimaryAppColour,
                   ),
                   onChanged: (String? newValue) {
+                    print(newValue);
                     setState(() {
-                      widget.note.noteType = enumFromString(NoteType.values, dropdownValue!)!;
-                      dropdownValue = newValue!;
+                      widget.note.noteType = enumFromString(NoteType.values, newValue!)!;
+                      dropdownValue = newValue;
                     });
                   },
                   items: noteTypes.map<DropdownMenuItem<String>>((String value) {
@@ -105,34 +106,77 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                       hintText: 'Note for your meeting...',
                     ),
                     keyboardType: TextInputType.multiline,
+                    textCapitalization: TextCapitalization.sentences,
                     minLines: 5,
                     maxLines: 10),
                 SizedBox(height: 10),
-                Container(
-                  alignment: Alignment.topRight,
-                  child: TextButton(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [TextButton(
                     style: ButtonStyle(
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                           EdgeInsets.all(15)),
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(kPrimaryAppColour),
+                      MaterialStateProperty.all<Color>(kWarningBackgroundColorLight),
                       foregroundColor:
-                          MaterialStateProperty.all<Color>(kPrimaryTitleColour),
+                      MaterialStateProperty.all<Color>(kPrimaryTitleColour),
                       shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      )),
+                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          )),
                     ),
                     onPressed: () {
-                        if (myController.text.isNotEmpty){
-                          widget.note.content = myController.text;
-                          widget.note.lastModifiedTime = DateTime.now();
-                          saveNoteToFireStore(widget.note, widget.note.groupId);
-                        }
-                      Navigator.pop(context);
+                      if (myController.text.isEmpty && widget.note.id == null){ // If it is empty and a new note
+                        Navigator.of(context).pop();
+                      } else {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Delete Note?'),
+                            content: const Text('Are you sure you want to delete this note?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text('No, go back!'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  deleteNoteFromFireStore(widget.note);
+                                  Navigator.of(context).popUntil((route) => route.isFirst);
+                                },
+                                child: const Text('Yes please!'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     },
-                    child: Text('Save note'),
+                    child: Text('Delete'),
                   ),
+                    TextButton(
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            EdgeInsets.all(15)),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(kPrimaryAppColour),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(kPrimaryTitleColour),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                        )),
+                      ),
+                      onPressed: () {
+                          if (myController.text.isNotEmpty){
+                            widget.note.content = myController.text;
+                            widget.note.lastModifiedTime = DateTime.now();
+                            saveNoteToFireStore(widget.note, widget.note.groupId);
+                          }
+                        Navigator.pop(context);
+                      },
+                      child: Text('Save note'),
+                    ),
+                  ],
                 ),
               ]),
         ),

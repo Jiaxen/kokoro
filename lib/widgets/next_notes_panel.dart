@@ -140,7 +140,7 @@ class NextNotesTab extends StatelessWidget {
                           child: ListTile(
                             leading: Icon(Icons.favorite),
                             title: Text('${notes[index].content}'),
-                            subtitle: Text('${notes[index].createdTime}'),
+                            subtitle: Text('${notes[index].lastModifiedTime}'),
                           ),
                     ),),
                     SizedBox(height:10),
