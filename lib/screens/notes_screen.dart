@@ -83,31 +83,35 @@ class _NotesScreenState extends State<NotesScreen>
                             (BuildContext context, bool innerBoxIsScrolled) {
                           return <Widget>[
                             SliverAppBar(
+                              automaticallyImplyLeading: false,
                               pinned: false,
                               snap: true,
                               floating: true,
-                              expandedHeight: 60.0,
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                              collapsedHeight: 80.0,
+                              expandedHeight: 80.0,
+                              flexibleSpace: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
                                   SizedBox(height: 10),
                                   Text(
                                     'Kokoro',
                                     style: TextStyle(
                                         fontSize: 28,
-                                        fontWeight: FontWeight.w700),
+                                        fontWeight: FontWeight.w700,
+                                    color: kPrimaryTitleColour),
                                   ),
                                   Text(
                                     'Relationship Meetings',
-                                    style: TextStyle(fontSize: 14),
+                                    style: TextStyle(fontSize: 14, color: kPrimaryTitleColour),
+
                                   ),
-                                  SizedBox(height: 8),
+                                  SizedBox(height: 10),
                                 ],
                               ),
                               actions: [
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: buildUserAvatar(appUser.photoURL),
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: InkWell(child: buildUserAvatar(appUser.photoURL), onTap: () {Scaffold.of(context).openDrawer();},),
                                 )
                               ],
                               centerTitle: false,

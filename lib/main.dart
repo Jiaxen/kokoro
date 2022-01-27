@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kokoro/screens/find_partner_screen.dart';
 import 'package:kokoro/screens/login_screen.dart';
 import 'package:kokoro/screens/notes_screen.dart';
 import 'firebase_options.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
             routes: {
               LoginScreen.id: (context) => const LoginScreen(),
               NotesScreen.id: (context) => const NotesScreen(),
+              FindPartnerScreen.id: (context) => const FindPartnerScreen(),
             },
           );
         },

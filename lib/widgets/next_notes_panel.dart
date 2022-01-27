@@ -113,7 +113,8 @@ class NextNotesTab extends StatelessWidget {
       decoration: BoxDecoration(
           color: kPrimaryBackgroundColour,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25), topRight: Radius.circular(25))),
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25))),
       child: Builder(builder: (BuildContext context) {
         return
           ListView.builder(
