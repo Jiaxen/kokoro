@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kokoro/models/note.dart';
+import 'package:kokoro/services/group_services.dart';
 import 'package:kokoro/utils.dart';
 
 /// Transforms the Firestore query [snapshot] into a list of [Note] instances.
@@ -46,7 +47,6 @@ Future<dynamic> deleteNoteFromFireStore(Note note) async {
 
 /// Returns reference to collection for users.
 CollectionReference notesCollection(String groupId) =>
-    FirebaseFirestore.instance
-    .collection('group')
+    groupCollection()
     .doc(groupId)
     .collection('notes');

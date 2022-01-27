@@ -25,7 +25,7 @@ void saveFirebaseUserToFirestore(User firebaseUser) {
     displayName: firebaseUser.displayName,
     photoURL: firebaseUser.photoURL,
   );
-  // Save AppUser to firestore
+  // Save AppUser to Firestore
   saveUserToFireStore(appUser);
 }
 

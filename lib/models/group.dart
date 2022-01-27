@@ -1,27 +1,28 @@
 import 'package:flutter/foundation.dart';
 
 class Group extends ChangeNotifier{
-  final String groupId;
-  String groupName;
+  String? groupId;
+  String? groupName;
   List<String> members;
-  List<String> invitedMembers;
+  List<String>? invitedMembers;
   DateTime createdTime;
 
   /// Instantiates a [Group].
   Group({
-    required this.groupId,
-    required this.groupName,
+    this.groupId,
+    this.groupName,
     required this.members,
-    required this.invitedMembers,
+    this.invitedMembers,
     required this.createdTime,
   });
 
   /// Serializes this [Group] into a JSON object.
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> groupToJson() => {
     'groupName': groupName,
-    'memberNames': members,
+    'members': members,
     'invitedMembers': invitedMembers,
     'createdTime': createdTime,
   };
 
 }
+
