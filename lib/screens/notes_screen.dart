@@ -92,7 +92,7 @@ class _NotesScreenState extends State<NotesScreen>
                               flexibleSpace: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  SizedBox(height: 10),
+                                  SizedBox(height: 15),
                                   Text(
                                     'Kokoro',
                                     style: TextStyle(
@@ -105,7 +105,7 @@ class _NotesScreenState extends State<NotesScreen>
                                     style: TextStyle(fontSize: 14, color: kPrimaryTitleColour),
 
                                   ),
-                                  SizedBox(height: 10),
+                                  SizedBox(height: 5),
                                 ],
                               ),
                               actions: [
