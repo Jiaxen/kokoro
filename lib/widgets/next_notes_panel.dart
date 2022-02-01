@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 import 'package:kokoro/models/note.dart';
 import 'package:kokoro/screens/edit_note_screen.dart';
 import 'package:provider/provider.dart';
@@ -71,6 +72,7 @@ class NextNotesTabs extends StatelessWidget {
             return Expanded(child:Container(
               color: kPrimaryAppColour,
               child: TabBarView(
+                physics: CustomTabBarViewScrollPhysics(),
                 controller: _tabController,
                 children: <Widget>[
                   NextNotesTab(
@@ -154,3 +156,19 @@ class NextNotesTab extends StatelessWidget {
   }
 }
 
+class CustomTabBarViewScrollPhysics extends ScrollPhysics {
+  const CustomTabBarViewScrollPhysics({ScrollPhysics? parent})
+      : super(parent: parent);
+
+  @override
+  CustomTabBarViewScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return CustomTabBarViewScrollPhysics(parent: buildParent(ancestor)!);
+  }
+
+  @override
+  SpringDescription get spring => const SpringDescription(
+    mass: 200,
+    stiffness: 100,
+    damping: 1,
+  );
+}
