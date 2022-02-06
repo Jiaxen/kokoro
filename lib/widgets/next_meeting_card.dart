@@ -16,7 +16,7 @@ class NextMeetingCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: InkWell(
-            onTap: () => Navigator.pushNamed(context, FindPartnerScreen.id),
+            onTap: () => Navigator.of(context).pushNamed(FindPartnerScreen.id),
             child: Card(
               margin: EdgeInsets.zero,
               color: kSecondaryAppColour,

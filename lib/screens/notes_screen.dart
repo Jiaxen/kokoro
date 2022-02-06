@@ -45,16 +45,8 @@ class _NotesScreenState extends State<NotesScreen>
     return ProgressHUD(
       child: Builder(
         builder: (context) {
-          final user = Provider.of<User>(context);
-          return StreamProvider<AppUser>(
-            create: (context) => userCollection()
-                .doc(user.uid)
-                .snapshots()
-                .map((snapshot) => documentSnapshotToAppUser(snapshot)),
-            initialData: AppUser.initial,
-            child: Consumer<AppUser>(
-              builder: (context, appUser, _) {
-                return Scaffold(
+          final appUser = Provider.of<AppUser>(context);
+          return Scaffold(
                     floatingActionButton: FloatingActionButton(
                         backgroundColor: kSecondaryAppColour,
                         child: const Icon(Icons.add, size: 40),
@@ -131,8 +123,6 @@ class _NotesScreenState extends State<NotesScreen>
               },
             ),
           );
-        },
-      ),
-    );
+        }
   }
-}
+
