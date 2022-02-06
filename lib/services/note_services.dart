@@ -42,7 +42,7 @@ Future<dynamic> saveNoteToFireStore(Note note, String groupId) async {
 Future<dynamic> deleteNoteFromFireStore(Note note) async {
   final notesCol = notesCollection(note.groupId);
   if (note.id != null){ notesCol.doc(note.id).delete().then((value) => print("Note Deleted"))
-      .catchError((error) => print("Failed to delete note: $error"));};
+      .catchError((error) => print("Failed to delete note: $error"));}
 }
 
 /// Returns reference to collection for users.

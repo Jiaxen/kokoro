@@ -35,4 +35,13 @@ class AppUser {
       'currentGroup': currentGroup
     };
   }
+
+  Map<String, dynamic> firebaseDetailsToJson() {
+    return {
+      'uid': uid,
+      'email': email,
+      'displayName': displayName,
+      'photoURL': photoURL,
+    };
+  }
 }

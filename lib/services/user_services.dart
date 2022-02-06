@@ -13,7 +13,7 @@ AppUser documentSnapshotToAppUser(DocumentSnapshot documentSnapshot) {
 
 Future<dynamic> saveUserToFireStore(AppUser appUser) async {
   final userCol = userCollection();
-  Map<String, dynamic> userAsJson = appUser.appUserToJson();
+  Map<String, dynamic> userAsJson = appUser.firebaseDetailsToJson();
   userCol.doc(appUser.uid).set(userAsJson, SetOptions(merge: true));
 }
 
