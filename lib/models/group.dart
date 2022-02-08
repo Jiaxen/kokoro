@@ -5,7 +5,7 @@ class Group extends ChangeNotifier{
   String? groupName;
   List<String> members;
   List<String>? invitedMembers;
-  DateTime createdTime;
+  DateTime? createdTime;
 
   /// Instantiates a [Group].
   Group({
@@ -13,8 +13,17 @@ class Group extends ChangeNotifier{
     this.groupName,
     required this.members,
     this.invitedMembers,
-    required this.createdTime,
+    this.createdTime,
   });
+
+  static Group initial = Group(
+    groupId: null,
+    members: []
+  );
+
+  bool isInitial(){
+    return groupId == null;
+  }
 
   /// Serializes this [Group] into a JSON object.
   Map<String, dynamic> groupToJson() => {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kokoro/models/group.dart';
 import 'package:kokoro/screens/find_partner_screen.dart';
 import 'package:kokoro/screens/login_screen.dart';
 import 'package:kokoro/screens/notes_screen.dart';
+import 'package:kokoro/services/group_services.dart';
 import 'package:kokoro/services/user_services.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
@@ -26,37 +28,53 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Provider of Firebase user at the top of the app tree
     return MultiProvider(
-      providers:[
-      StreamProvider<User?>.value(
-      value: FirebaseAuth.instance.authStateChanges(),
-      initialData: FirebaseAuth.instance.currentUser),
-        StreamProvider<AppUser>(
-          create: (context) => userCollection()
-              .doc(Provider.of<User?>(context, listen: false)?.uid)
-              .snapshots()
-              .map((snapshot) => documentSnapshotToAppUser(snapshot)),
-          initialData: AppUser.initial)
-      ],
-          child: Builder(
-            builder: (context) {
-              final user = Provider.of<User?>(context);
-              return MaterialApp(
-                builder: (context, child) {
-                  return ScrollConfiguration(
-                    behavior: NoGlowScrollBehavior(),
-                    child: child!,
-                  );
-                },
-                home: (user == null) ? const LoginScreen() : const NotesScreen(),
-                routes: {
-                  LoginScreen.id: (context) => const LoginScreen(),
-                  NotesScreen.id: (context) => const NotesScreen(),
-                  FindPartnerScreen.id: (context) => const FindPartnerScreen(),
-                },
+        providers: [
+          FirebaseUserStream(),
+          AppUserStream(),
+          GroupStream(),
+        ],
+        child: Builder(builder: (context) {
+          final user = Provider.of<User?>(context);
+          return MaterialApp(
+            builder: (context, child) {
+              return ScrollConfiguration(
+                behavior: NoGlowScrollBehavior(),
+                child: child!,
               );
-            }
-          )
-    );
+            },
+            home: (user == null) ? const LoginScreen() : const NotesScreen(),
+            routes: {
+              LoginScreen.id: (context) => const LoginScreen(),
+              NotesScreen.id: (context) => const NotesScreen(),
+              FindPartnerScreen.id: (context) => const FindPartnerScreen(),
+            },
+          );
+        }));
+  }
+
+  StreamProvider<User?> FirebaseUserStream() {
+    return StreamProvider<User?>.value(
+            value: FirebaseAuth.instance.authStateChanges(),
+            initialData: FirebaseAuth.instance.currentUser);
+  }
+
+  StreamProvider<Group> GroupStream() {
+    return StreamProvider<Group>(
+          create: (context) => groupCollection()
+              .doc(Provider.of<AppUser>(context, listen: false).currentGroup)
+              .snapshots()
+              .map((snapshot) => documentSnapshotToGroup(snapshot)),
+          initialData: Group.initial,
+        );
+  }
+
+  StreamProvider<AppUser> AppUserStream() {
+    return StreamProvider<AppUser>(
+            create: (context) => userCollection()
+                .doc(Provider.of<User?>(context, listen: false)?.uid)
+                .snapshots()
+                .map((snapshot) => documentSnapshotToAppUser(snapshot)),
+            initialData: AppUser.initial);
   }
 }
 
