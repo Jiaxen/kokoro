@@ -60,10 +60,14 @@ class MyApp extends StatelessWidget {
 
   StreamProvider<Group> GroupStream() {
     return StreamProvider<Group>(
-          create: (context) => groupCollection()
-              .doc(Provider.of<AppUser>(context, listen: false).currentGroup)
+          create: (context) {
+            String? appUserGroup = Provider.of<AppUser>(context, listen: false).currentGroup;
+            print(appUserGroup);
+            return groupCollection()
+              .doc(appUserGroup)
               .snapshots()
-              .map((snapshot) => documentSnapshotToGroup(snapshot)),
+              .map((snapshot) => documentSnapshotToGroup(snapshot));
+          },
           initialData: Group.initial,
         );
   }

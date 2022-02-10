@@ -5,9 +5,9 @@ Group documentSnapshotToGroup(DocumentSnapshot documentSnapshot) {
   return Group(
       groupId: documentSnapshot.id,
       groupName: documentSnapshot.get('groupName'),
-      members: documentSnapshot.get('members'),
-      invitedMembers: documentSnapshot.get('invitedMembers'),
-      createdTime: documentSnapshot.get('createdTime'));
+      members: List<String>.from(documentSnapshot.get('members')),
+      invitedMembers: List<String>.from(documentSnapshot.get('invitedMembers')),
+      createdTime: (documentSnapshot.get('createdTime') as Timestamp).toDate(),);
 }
 
 
