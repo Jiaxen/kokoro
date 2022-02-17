@@ -138,11 +138,11 @@ class _FindPartnerScreenState extends State<FindPartnerScreen> {
               )),
             ),
             onPressed: () {
-
               if (myController.text != "") {
                 group.invitedMembers != null
                     ? group.invitedMembers!.add(myController.text.toLowerCase())
                     : group.invitedMembers = [myController.text.toLowerCase()];
+                // TODO: Email the user
                 saveGroupToFireStore(group);
                 Navigator.of(context).popUntil((route) => route.isFirst);
               }

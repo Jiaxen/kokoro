@@ -4,13 +4,12 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:kokoro/constants.dart';
 import 'package:kokoro/models/note.dart';
 import 'package:kokoro/screens/drawer.dart';
-import 'package:kokoro/widgets/next_meeting_card.dart';
+import 'package:kokoro/widgets/group_management_card.dart';
 import 'package:kokoro/widgets/next_notes_panel.dart';
 import 'package:flutter/services.dart';
 import 'package:kokoro/widgets/user_image.dart';
 import 'package:provider/provider.dart';
 import 'package:kokoro/models/user.dart';
-import 'package:kokoro/services/user_services.dart';
 import 'package:kokoro/screens/edit_note_screen.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -109,7 +108,7 @@ class _NotesScreenState extends State<NotesScreen>
                               centerTitle: false,
                               backgroundColor: kPrimaryAppColour,
                             ),
-                            NextMeetingCard(),
+                            GroupManagementCard(),
                           ];
                         },
                         body: Column(
