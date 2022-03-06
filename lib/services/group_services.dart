@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kokoro/models/group.dart';
 import 'package:kokoro/models/user.dart';
-import 'package:provider/provider.dart';
 
 Group documentSnapshotToGroup(DocumentSnapshot doc) {
   if (doc.data() == null) {
