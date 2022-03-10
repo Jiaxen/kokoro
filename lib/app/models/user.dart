@@ -26,7 +26,7 @@ class AppUser {
     return uid == '' ? true : false;
   }
 
-  Map<String, dynamic> appUserToJson() {
+  Map<String, dynamic> toMap() {
     return {
       'uid': uid,
       'email': email,

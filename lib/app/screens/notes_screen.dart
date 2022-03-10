@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:kokoro/constants.dart';
-import 'package:kokoro/models/note.dart';
-import 'package:kokoro/screens/drawer.dart';
+import 'package:kokoro/app/models/note.dart';
+import 'package:kokoro/app/screens/drawer.dart';
 import 'package:kokoro/widgets/group_management_card.dart';
 import 'package:kokoro/widgets/next_notes_panel.dart';
 import 'package:flutter/services.dart';
 import 'package:kokoro/widgets/user_image.dart';
-import 'package:provider/provider.dart';
-import 'package:kokoro/models/user.dart';
-import 'package:kokoro/screens/edit_note_screen.dart';
+import 'package:kokoro/app/models/user.dart';
+import 'package:kokoro/app/screens/edit_note_screen.dart';
 
 class NotesScreen extends StatefulWidget {
   static const String id = 'notes_screen';

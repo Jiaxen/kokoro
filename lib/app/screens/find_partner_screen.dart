@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kokoro/models/group.dart';
-import 'package:kokoro/models/user.dart';
+import 'package:kokoro/app/models/group.dart';
+import 'package:kokoro/app/models/user.dart';
 import 'package:kokoro/services/group_services.dart';
-import 'package:provider/provider.dart';
 import 'dart:math' as math;
-import '../constants.dart';
+import 'package:kokoro/constants.dart';
 
 class FindPartnerScreen extends StatefulWidget {
   static const String id = 'find_partner_screen';

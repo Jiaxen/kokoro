@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kokoro/constants.dart';
-import 'package:kokoro/models/note.dart';
+import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/services/note_services.dart';
 import 'package:kokoro/utils.dart';
 

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kokoro/utils.dart';
 
-import '../utils.dart';
 
 class Note extends ChangeNotifier {
-  String? id;
+  String id;
   String content;
   NoteState noteState;
   NoteType noteType;
@@ -15,7 +15,7 @@ class Note extends ChangeNotifier {
   DateTime lastModifiedTime;
 
   Note({
-    this.id,
+    required this.id,
     required this.content,
     required this.noteState,
     required this.noteType,
