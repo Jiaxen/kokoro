@@ -1,13 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kokoro/app/models/user.dart';
+import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
-import 'package:kokoro/login_utils.dart';
+import 'package:kokoro/services/firestore_database.dart';
+import 'package:kokoro/services/login_utils.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/services.dart';
-import 'package:kokoro/services/user_services.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   static const String id = 'login_screen';
 
   const LoginScreen({Key? key}) : super(key: key);
@@ -16,7 +19,7 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   String? _errorMessage;
 
   @override
@@ -112,4 +115,15 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       );
+
+  void saveFirebaseUserToFirestore(User firebaseUser) {
+    final database = ref.read<FirestoreDatabase?>(databaseProvider)!;
+    AppUser appUser = AppUser(
+    uid: firebaseUser.uid,
+    email: firebaseUser.email,
+    displayName: firebaseUser.displayName,
+    photoURL: firebaseUser.photoURL,
+  );
+    database.setUser(appUser);
+  }
 }

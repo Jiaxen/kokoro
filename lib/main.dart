@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kokoro/app/onboarding/onboarding_page.dart';
 import 'package:kokoro/app/onboarding/onboarding_view_model.dart';
-import 'package:kokoro/app/screens/login_screen.dart';
+import 'package:kokoro/app/login/login_screen.dart';
 import 'package:kokoro/app/screens/notes_screen.dart';
 import 'package:kokoro/routing/app_router.dart';
 import 'package:kokoro/services/shared_preferences_service.dart';
