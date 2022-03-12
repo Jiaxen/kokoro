@@ -4,7 +4,7 @@ import 'package:kokoro/utils.dart';
 
 
 class Note extends ChangeNotifier {
-  String id;
+  String? id;
   String content;
   NoteState noteState;
   NoteType noteType;

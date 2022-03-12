@@ -1,15 +1,14 @@
-import 'package:email_password_sign_in_ui/email_password_sign_in_ui.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:starter_architecture_flutter_firebase/app/home/job_entries/entry_page.dart';
-import 'package:starter_architecture_flutter_firebase/app/home/jobs/edit_job_page.dart';
-import 'package:starter_architecture_flutter_firebase/app/home/models/entry.dart';
-import 'package:starter_architecture_flutter_firebase/app/home/models/job.dart';
+import 'package:kokoro/app/models/note.dart';
+import 'package:kokoro/app/screens/edit_note_screen.dart';
+import 'package:kokoro/app/screens/find_partner_screen.dart';
+import 'package:kokoro/app/screens/notes_screen.dart';
 
 class AppRoutes {
-  static const emailPasswordSignInPage = '/email-password-sign-in-page';
-  static const editJobPage = '/edit-job-page';
-  static const entryPage = '/entry-page';
+  static const notesScreen = '/notes-screen';
+  static const editNoteScreen = '/edit-note-screen';
+  static const findPartnerScreen = '/find-partner-screen';
 }
 
 class AppRouter {
@@ -17,25 +16,21 @@ class AppRouter {
       RouteSettings settings, FirebaseAuth firebaseAuth) {
     final args = settings.arguments;
     switch (settings.name) {
-      case AppRoutes.emailPasswordSignInPage:
+      case AppRoutes.editNoteScreen:
         return MaterialPageRoute<dynamic>(
-          builder: (_) => EmailPasswordSignInPage.withFirebaseAuth(firebaseAuth,
-              onSignedIn: args as void Function()),
+          builder: (_) => EditNoteScreen(note: args as Note),
           settings: settings,
           fullscreenDialog: true,
         );
-      case AppRoutes.editJobPage:
+      case AppRoutes.notesScreen:
         return MaterialPageRoute<dynamic>(
-          builder: (_) => EditJobPage(job: args as Job?),
+          builder: (_) => NotesScreen(),
           settings: settings,
           fullscreenDialog: true,
         );
-      case AppRoutes.entryPage:
-        final mapArgs = args as Map<String, dynamic>;
-        final job = mapArgs['job'] as Job;
-        final entry = mapArgs['entry'] as Entry?;
+      case AppRoutes.findPartnerScreen:
         return MaterialPageRoute<dynamic>(
-          builder: (_) => EntryPage(job: job, entry: entry),
+          builder: (_) => FindPartnerScreen(),
           settings: settings,
           fullscreenDialog: true,
         );

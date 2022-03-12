@@ -13,8 +13,8 @@ class FirestoreDatabase {
 
   final _service = FirestoreService.instance;
 
-  Future<void> setUser(AppUser appUser) => _service.setData(
-        path: FirestorePath.user(uid),
+  Future<void> setUser(AppUser appUser) => _service.updateData(
+        documentPath: FirestorePath.user(uid),
         data: appUser.toMap(),
       );
 
@@ -45,12 +45,23 @@ class FirestoreDatabase {
         builder: (data, documentId) => Note.fromMap(data, documentId),
       );
 
-  Future<void> setNote(Note note) => _service.setData(
-        path: FirestorePath.note(note.groupId, note.id),
+  Future<void> setNote(Note note) {
+    if (note.id != null){
+      // Update note in Firebase
+      return _service.updateData(
+        documentPath: FirestorePath.note(note.groupId, note.id!),
         data: note.toMap(),
       );
+    }else{
+      // Create note in Firebase if note.id is null
+      return _service.addData(
+        collectionPath: FirestorePath.notes(note.groupId),
+        data: note.toMap(),
+      );
+ }
+  }
 
   Future<void> deleteNote(Note note) =>
-      _service.deleteData(path: FirestorePath.note(uid, note.id));
+      _service.deleteData(path: FirestorePath.note(uid, note.id!));
 
 }

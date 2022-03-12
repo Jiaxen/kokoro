@@ -53,6 +53,7 @@ class _NotesScreenState extends State<NotesScreen>
                             context: context,
                             builder: (context) => EditNoteScreen(
                                 note: Note(
+                                  id: null,
                                     content: '',
                                     noteState: NoteState.current,
                                     noteType:
