@@ -9,38 +9,35 @@ import 'package:kokoro/services/firestore_service.dart';
 
 class FirestoreDatabase {
   FirestoreDatabase({required this.uid});
+
   final String uid;
 
   final _service = FirestoreService.instance;
 
-  Future<void> setUser(AppUser appUser) => _service.updateData(
+  Future<void> setUser(AppUser appUser) =>
+      _service.updateData(
         documentPath: FirestorePath.user(uid),
         data: appUser.toMap(),
       );
 
-  // Future<void> deleteUser(AppUser appUser) async {
-  //   // delete where entry.jobId == job.jobId
-  //   final allEntries = await entriesStream(job: job).first;
-  //   for (final entry in allEntries) {
-  //     if (entry.jobId == job.id) {
-  //       await deleteEntry(entry);
-  //     }
-  //   }
-  //   // delete job
-  //   await _service.deleteData(path: FirestorePath.job(uid, job.id));
-  // }
+  Stream<AppUser> appUserStream() {
+    return _service.documentStream(
+      path: FirestorePath.user(uid),
+      builder: (data, documentId) => AppUser.fromMap(data, documentId),
+    );
+  }
 
-  Stream<Group> GroupStream({required String groupId}) => _service.documentStream(
+  Stream<Group> groupStream({required String groupId}) => _service.documentStream(
     path: FirestorePath.group(groupId),
     builder: (data, documentId) => Group.fromMap(data, documentId),
   );
 
-  Stream<Note> NoteStream({required String noteId}) => _service.documentStream(
+  Stream<Note> noteStream({required String noteId}) => _service.documentStream(
         path: FirestorePath.note(uid, noteId),
         builder: (data, documentId) => Note.fromMap(data, documentId),
       );
 
-  Stream<List<Note>> NotesStream() => _service.collectionStream(
+  Stream<List<Note>> notesStream() => _service.collectionStream(
         path: FirestorePath.notes(uid),
         builder: (data, documentId) => Note.fromMap(data, documentId),
       );

@@ -117,7 +117,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       );
 
   void saveFirebaseUserToFirestore(User firebaseUser) {
-    final database = ref.read<FirestoreDatabase?>(databaseProvider)!;
+    final database = ref.read<FirestoreDatabase?>(userProvider)!;
     AppUser appUser = AppUser(
     uid: firebaseUser.uid,
     email: firebaseUser.email,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kokoro/constants.dart';
 import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/app/screens/drawer.dart';
@@ -11,7 +12,7 @@ import 'package:kokoro/widgets/user_image.dart';
 import 'package:kokoro/app/models/user.dart';
 import 'package:kokoro/app/screens/edit_note_screen.dart';
 
-class NotesScreen extends StatefulWidget {
+class NotesScreen extends ConsumerStatefulWidget {
   static const String id = 'notes_screen';
 
   const NotesScreen({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class NotesScreen extends StatefulWidget {
   _NotesScreenState createState() => _NotesScreenState();
 }
 
-class _NotesScreenState extends State<NotesScreen>
+class _NotesScreenState extends ConsumerState<NotesScreen>
     with TickerProviderStateMixin {
   final _auth = FirebaseAuth.instance;
   late TabController _tabController;
@@ -43,7 +44,8 @@ class _NotesScreenState extends State<NotesScreen>
     return ProgressHUD(
       child: Builder(
         builder: (context) {
-          final appUser = Provider.of<AppUser>(context);
+          // final appUser = Provider.of<AppUser>(context);
+          final appUser = ref.
           return Scaffold(
                     floatingActionButton: FloatingActionButton(
                         backgroundColor: kSecondaryAppColour,
