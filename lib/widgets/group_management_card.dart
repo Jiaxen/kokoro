@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kokoro/app/screens/find_partner_screen.dart';
+import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
-import 'package:kokoro/models/group.dart';
-import 'package:kokoro/models/user.dart';
-import 'package:kokoro/screens/find_partner_screen.dart';
-import 'package:provider/provider.dart';
 
-class GroupManagementCard extends StatelessWidget {
+
+class GroupManagementCard extends ConsumerWidget {
   const GroupManagementCard({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    Group group = Provider.of<Group>(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final group = ref.watch(groupProvider).value!;
     return SliverToBoxAdapter(
       child: Container(
         color: kPrimaryAppColour,
@@ -25,13 +25,15 @@ class GroupManagementCard extends StatelessWidget {
   }
 }
 
-class NewPartnerWidget extends StatelessWidget {
+class NewPartnerWidget extends ConsumerWidget {
   const NewPartnerWidget({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider).value!;
+    final group = ref.watch(groupProvider).value!;
     return InkWell(
       onTap: () => Navigator.of(context).pushNamed(FindPartnerScreen.id),
       child: Card(
@@ -43,9 +45,9 @@ class NewPartnerWidget extends StatelessWidget {
             size: 30,
             color: Colors.amber[100],
           ),
-          title: Text(Provider.of<AppUser>(context).currentGroup ?? 'Nope (AU)',
+          title: Text(user.currentGroup ?? 'Nope (AU)',
               style: TextStyle(color: kPrimaryTitleColour)),
-          subtitle: Text(Provider.of<Group>(context).groupId ?? 'Nope (GP)'),
+          subtitle: Text(group.groupId ?? 'Nope (GP)'),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),

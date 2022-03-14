@@ -32,13 +32,29 @@ class FirestoreDatabase {
     builder: (data, documentId) => Group.fromMap(data, documentId),
   );
 
-  Stream<Note> noteStream({required String noteId}) => _service.documentStream(
-        path: FirestorePath.note(uid, noteId),
+  Future<void> setGroup(Group group) {
+    if (group.groupId != null){
+      // Update note in Firebase
+      return _service.updateData(
+        documentPath: FirestorePath.group(group.groupId!),
+        data: group.toMap(),
+      );
+    }else{
+      // Create note in Firebase if note.id is null
+      return _service.addData(
+        collectionPath: FirestorePath.groups(),
+        data: group.toMap(),
+      );
+    }
+  }
+
+  Stream<Note> noteStream({required String noteId, required String groupId}) => _service.documentStream(
+        path: FirestorePath.note(groupId, noteId),
         builder: (data, documentId) => Note.fromMap(data, documentId),
       );
 
-  Stream<List<Note>> notesStream() => _service.collectionStream(
-        path: FirestorePath.notes(uid),
+  Stream<List<Note>> notesStream({required String groupId}) => _service.collectionStream(
+        path: FirestorePath.notes(groupId),
         builder: (data, documentId) => Note.fromMap(data, documentId),
       );
 

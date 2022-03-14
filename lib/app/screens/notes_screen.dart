@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
 import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/app/screens/drawer.dart';
@@ -45,7 +46,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen>
       child: Builder(
         builder: (context) {
           // final appUser = Provider.of<AppUser>(context);
-          final appUser = ref.
+          final appUser = ref.watch(userProvider).value!;
           return Scaffold(
                     floatingActionButton: FloatingActionButton(
                         backgroundColor: kSecondaryAppColour,

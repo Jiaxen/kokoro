@@ -60,66 +60,7 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
-//    // Provider of Firebase user at the top of the app tree
-//     return MultiProvider(
-//         providers: [
-//           FirebaseUserStream(),
-//           AppUserStream(),
-//           GroupStream(),
-//         ],
-//         child: Builder(builder: (context) {
-//           final user = Provider.of<User?>(context);
-//           return MaterialApp(
-//             debugShowCheckedModeBanner: false,
-//             builder: (context, child) {
-//               return ScrollConfiguration(
-//                 behavior: NoGlowScrollBehavior(),
-//                 child: child!,
-//               );
-//             },
-//             home: (user == null) ? const LoginScreen() : const NotesScreen(),
-//             routes: {
-//               LoginScreen.id: (context) => const LoginScreen(),
-//               NotesScreen.id: (context) => const NotesScreen(),
-//               FindPartnerScreen.id: (context) => const FindPartnerScreen(),
-//             },
-//           );
-//         }));
 
-//   StreamProvider<User?> FirebaseUserStream() {
-//     return StreamProvider<User?>.value(
-//         value: FirebaseAuth.instance.authStateChanges(),
-//         initialData: FirebaseAuth.instance.currentUser);
-//   }
-//
-//   StreamProvider<Group> GroupStream() {
-//     return StreamProvider<Group>(
-//       create: (context) {
-//         String? appUserGroup = Provider
-//             .of<AppUser>(context, listen: false)
-//             .currentGroup;
-//         print(appUserGroup);
-//         return groupCollection()
-//             .doc(appUserGroup)
-//             .snapshots()
-//             .map((snapshot) => documentSnapshotToGroup(snapshot));
-//       },
-//       initialData: Group.initial,
-//     );
-//   }
-//
-//   StreamProvider<AppUser> AppUserStream() {
-//     return StreamProvider<AppUser>(
-//         create: (context) =>
-//             userCollection()
-//                 .doc(Provider
-//                 .of<User?>(context, listen: false)
-//                 ?.uid)
-//                 .snapshots()
-//                 .map((snapshot) => documentSnapshotToAppUser(snapshot)),
-//         initialData: AppUser.initial);
-//   }
-// }
 
 class NoGlowScrollBehavior extends ScrollBehavior {
   @override

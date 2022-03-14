@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
 import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/services/note_services.dart';
 import 'package:kokoro/utils.dart';
 
-class EditNoteScreen extends StatefulWidget {
+class EditNoteScreen extends ConsumerStatefulWidget {
   final Note note;
 
   const EditNoteScreen({Key? key, required this.note}) : super(key: key);
@@ -13,7 +15,7 @@ class EditNoteScreen extends StatefulWidget {
   _EditNoteScreenState createState() => _EditNoteScreenState();
 }
 
-class _EditNoteScreenState extends State<EditNoteScreen> {
+class _EditNoteScreenState extends ConsumerState<EditNoteScreen> {
   String? dropdownValue;
   final myController = TextEditingController();
 
@@ -141,7 +143,8 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    deleteNoteFromFireStore(widget.note);
+                                    final database = ref.watch(databaseProvider)!;
+                                    database.deleteNote(widget.note);
                                     FocusScope.of(context).unfocus();
                                     Navigator.of(context)
                                         .popUntil((route) => route.isFirst);
@@ -172,7 +175,8 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                         if (myController.text.isNotEmpty) {
                           widget.note.content = myController.text;
                           widget.note.lastModifiedTime = DateTime.now();
-                          saveNoteToFireStore(widget.note, widget.note.groupId);
+                          final database = ref.watch(databaseProvider)!;
+                          database.setNote(widget.note);
                         }
                         Navigator.pop(context);
                       },

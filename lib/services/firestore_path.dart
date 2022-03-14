@@ -1,5 +1,6 @@
 class FirestorePath {
   static String group(String groupId) => 'group/$groupId';
+  static String groups() => 'group';
   static String user(String uid) => 'users/$uid';
   static String meeting(String groupId, String meetingId) =>
       'group/$groupId/meetings/$meetingId';
