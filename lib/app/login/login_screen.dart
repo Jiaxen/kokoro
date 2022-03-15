@@ -71,8 +71,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           onPressed: () async {
                         final progress = ProgressHUD.of(context);
                         progress?.show();
+                        final firebaseAuth = ref.watch(firebaseAuthProvider);
                         try {
-                          UserCredential user = await signInWithGoogle();
+                          UserCredential user = await signInWithGoogle(firebaseAuth);
                           saveFirebaseUserToFirestore(user.user!);
                         } catch (e) {
                           _errorMessage = e.toString();
@@ -85,7 +86,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             final progress = ProgressHUD.of(context);
                             progress?.show();
                             try {
-                              UserCredential user = await signInWithFacebook();
+                              final firebaseAuth = ref.watch(firebaseAuthProvider);
+                              UserCredential user = await signInWithFacebook(firebaseAuth);
                               saveFirebaseUserToFirestore(user.user!);
                             } catch (e) {
                               _errorMessage = e.toString();
