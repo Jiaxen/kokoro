@@ -12,15 +12,19 @@ class GroupManagementCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final group = ref.watch(groupProvider).value!;
-    return SliverToBoxAdapter(
-      child: Container(
-        color: kPrimaryAppColour,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: group.invitedMembers == null ? NewPartnerWidget() : NextMeetingWidget(),
+    final groupAsyncValue = ref.watch(groupProvider);
+    return groupAsyncValue.when(
+      data: (group) => SliverToBoxAdapter(
+        child: Container(
+          color: kPrimaryAppColour,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: group.invitedMembers == null ? NewPartnerWidget() : NextMeetingWidget(),
+          ),
         ),
       ),
+      loading: () => SliverToBoxAdapter(child: Container()),
+      error: (_,__) => SliverToBoxAdapter(child: Container()),
     );
   }
 }

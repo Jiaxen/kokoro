@@ -21,20 +21,18 @@ final databaseProvider = Provider<FirestoreDatabase?>((ref) {
 });
 
 final userProvider = StreamProvider<AppUser>((ref) {
-  final database = ref.watch(databaseProvider);
-  if (database != null) {
-    return database.appUserStream();
-  }
-  return Stream.value(AppUser.initial);
+  final database = ref.watch(databaseProvider)!;
+  return database.appUserStream();
 });
 
 final groupProvider = StreamProvider<Group>((ref) {
-  final database = ref.watch(databaseProvider);
-  final user = ref.watch(userProvider);
-  if (database != null && user.value?.currentGroup != null) {
-    return database.groupStream(groupId: user.value!.currentGroup!);
-  }
-  return Stream.value(Group.initial);
+  final database = ref.watch(databaseProvider)!;
+  final userAsyncValue = ref.watch(userProvider);
+  return userAsyncValue.when(
+    data: (user) => database.groupStream(groupId: user.currentGroup!),
+    loading: () => Stream.value(Group.initial),
+    error: (_,__) => Stream.value(Group.initial),
+  );
 });
 
 final loggerProvider = Provider<Logger>((ref) =>

@@ -18,7 +18,7 @@ class OnboardingPage extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Track your time.\nBecause time counts.',
+              'Relationship meetings.\n For Love.',
               style: Theme.of(context).textTheme.headline4,
               textAlign: TextAlign.center,
             ),
@@ -32,7 +32,7 @@ class OnboardingPage extends ConsumerWidget {
                 style: Theme.of(context)
                     .textTheme
                     .headline5!
-                    .copyWith(color: Colors.white),
+                    .copyWith(color: Colors.blue),
               ),
             ),
           ],

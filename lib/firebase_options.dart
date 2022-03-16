@@ -61,6 +61,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '373984599562',
     projectId: 'kokoro-relationship-meetings',
     storageBucket: 'kokoro-relationship-meetings.appspot.com',
+    androidClientId: '373984599562-odv9h676ej58m4dfe0ftcdf3rnu9ihn7.apps.googleusercontent.com',
     iosClientId: '373984599562-5clrco6q2j9kq96ja96kbm3ubht34jso.apps.googleusercontent.com',
     iosBundleId: 'com.jiaxen.kokoro',
   );
