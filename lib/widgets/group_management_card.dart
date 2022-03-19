@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kokoro/app/screens/find_partner_screen.dart';
 import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
+import 'package:kokoro/routing/app_router.dart';
 
 
 class GroupManagementCard extends ConsumerWidget {
@@ -39,7 +40,7 @@ class NewPartnerWidget extends ConsumerWidget {
     final user = ref.watch(userProvider).value!;
     final group = ref.watch(groupProvider).value!;
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(FindPartnerScreen.id),
+      onTap: () => Navigator.of(context, rootNavigator: true).pushNamed(AppRoutes.findPartnerScreen),
       child: Card(
         margin: EdgeInsets.zero,
         color: kSecondaryAppColour,

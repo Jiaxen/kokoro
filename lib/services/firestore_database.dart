@@ -75,6 +75,6 @@ class FirestoreDatabase {
   }
 
   Future<void> deleteNote(Note note) =>
-      _service.deleteData(path: FirestorePath.note(uid, note.id!));
+      _service.deleteData(path: FirestorePath.note(note.groupId, note.id!));
 
 }

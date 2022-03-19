@@ -3,13 +3,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
 import 'package:kokoro/app/models/note.dart';
+import 'package:kokoro/routing/app_router.dart';
 import 'package:kokoro/services/note_services.dart';
 import 'package:kokoro/utils.dart';
 
 class EditNoteScreen extends ConsumerStatefulWidget {
   final Note note;
-
   const EditNoteScreen({Key? key, required this.note}) : super(key: key);
+
+
+  static Future<void> show(BuildContext context, {Note? note}) async {
+    await Navigator.of(context, rootNavigator: true).pushNamed(
+      AppRoutes.editNoteScreen,
+      arguments: note,
+    );
+  }
 
   @override
   _EditNoteScreenState createState() => _EditNoteScreenState();
