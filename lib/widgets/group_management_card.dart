@@ -71,7 +71,7 @@ class NextMeetingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(FindPartnerScreen.id),
+      onTap: () => Navigator.of(context).pushNamed(AppRoutes.findPartnerScreen),
       child: Card(
         margin: EdgeInsets.zero,
         color: kSecondaryAppColour,
