@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:kokoro/models/group.dart';
-import 'package:kokoro/models/user.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kokoro/app/models/group.dart';
+import 'package:kokoro/app/models/user.dart';
+import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/services/group_services.dart';
-import 'package:provider/provider.dart';
 import 'dart:math' as math;
-import '../constants.dart';
+import 'package:kokoro/constants.dart';
 
-class FindPartnerScreen extends StatefulWidget {
+class FindPartnerScreen extends ConsumerStatefulWidget {
   static const String id = 'find_partner_screen';
 
   const FindPartnerScreen({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class FindPartnerScreen extends StatefulWidget {
   _FindPartnerScreenState createState() => _FindPartnerScreenState();
 }
 
-class _FindPartnerScreenState extends State<FindPartnerScreen> {
+class _FindPartnerScreenState extends ConsumerState<FindPartnerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +85,7 @@ class _FindPartnerScreenState extends State<FindPartnerScreen> {
 
   Column addPartnerInterface() {
     final myController = TextEditingController();
-    Group group = Provider.of<Group>(context);
+    final group = ref.watch(groupProvider).value!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -143,7 +144,8 @@ class _FindPartnerScreenState extends State<FindPartnerScreen> {
                     ? group.invitedMembers!.add(myController.text.toLowerCase())
                     : group.invitedMembers = [myController.text.toLowerCase()];
                 // TODO: Email the user
-                saveGroupToFireStore(group);
+                final database = ref.watch(databaseProvider)!;
+                database.setGroup(group);
                 Navigator.of(context).popUntil((route) => route.isFirst);
               }
             },

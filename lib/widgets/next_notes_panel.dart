@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
-import 'package:kokoro/models/note.dart';
-import 'package:kokoro/screens/edit_note_screen.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kokoro/app/models/note.dart';
+import 'package:kokoro/app/screens/edit_note_screen.dart';
+import 'package:kokoro/app/top_level_providers.dart';
 import '../constants.dart';
-import 'package:kokoro/models/user.dart';
 import 'package:kokoro/services/note_services.dart';
 
 class NextNotesTabBar extends StatelessWidget {
@@ -32,7 +32,14 @@ class NextNotesTabBar extends StatelessWidget {
   }
 }
 
-class NextNotesTabs extends StatelessWidget {
+final notesStreamProvider =
+StreamProvider.autoDispose.family<List<Note>, String>((ref, groupId) {
+  final database = ref.watch(databaseProvider)!;
+  return database.notesStream(groupId: groupId);
+});
+
+
+class NextNotesTabs extends ConsumerWidget {
   const NextNotesTabs({
     Key? key,
     required TabController tabController,
@@ -42,62 +49,78 @@ class NextNotesTabs extends StatelessWidget {
   final TabController _tabController;
 
   @override
-  Widget build(BuildContext context) {
-    final user = Provider.of<AppUser>(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider).value!;
     if (user.currentGroup == null) {
-      return Expanded(
+      return LoadingNotes();
+    } else {
+    final notes = ref.watch(notesStreamProvider(user.currentGroup!));
+    return notes.when(
+    data: (notes) => ShowNotes(tabController: _tabController, notes: notes),
+    loading: () => LoadingNotes(),
+    error: (_, __) => LoadingNotes(),
+    );
+    }
+  }
+}
+
+class ShowNotes extends StatelessWidget {
+  final tabController;
+  final notes;
+  const ShowNotes({Key? key, this.tabController, this.notes}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(child:Container(
+      color: kPrimaryAppColour,
+      child: TabBarView(
+        physics: CustomTabBarViewScrollPhysics(),
+        controller: tabController,
+        children: <Widget>[
+          NextNotesTab(
+              notes: notes
+                  .where((e) => e.noteType == NoteType.appreciation)
+                  .toList()),
+          NextNotesTab(
+              notes: notes
+                  .where((e) => e.noteType == NoteType.chores)
+                  .toList()),
+          NextNotesTab(
+              notes: notes
+                  .where((e) => e.noteType == NoteType.plans)
+                  .toList()),
+          NextNotesTab(
+              notes: notes
+                  .where((e) => e.noteType == NoteType.challenges)
+                  .toList()),
+        ],
+      ),
+    ));;
+  }
+}
+
+
+class LoadingNotes extends StatelessWidget {
+  const LoadingNotes({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        color:  kPrimaryAppColour,
         child: Container(
-          color:  kPrimaryAppColour,
-          child: Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+          child: const Center(
+            child: CircularProgressIndicator(),
           ),
         ),
-      );
-    } else {
-      return StreamProvider<List<Note>>(
-        create: (context) => notesCollection(user.currentGroup!)
-            .where('sentBy', isEqualTo: user.uid)
-            .where('noteState', isEqualTo: 'current')
-            .snapshots()
-            .map((snapshot) => fromQueryToNotes(snapshot)),
-        initialData: [],
-        child: Consumer<List<Note>>(
-          builder: (context, notes, _) {
-            return Expanded(child:Container(
-              color: kPrimaryAppColour,
-              child: TabBarView(
-                physics: CustomTabBarViewScrollPhysics(),
-                controller: _tabController,
-                children: <Widget>[
-                  NextNotesTab(
-                      notes: notes
-                          .where((e) => e.noteType == NoteType.appreciation)
-                          .toList()),
-                  NextNotesTab(
-                      notes: notes
-                          .where((e) => e.noteType == NoteType.chores)
-                          .toList()),
-                  NextNotesTab(
-                      notes: notes
-                          .where((e) => e.noteType == NoteType.plans)
-                          .toList()),
-                  NextNotesTab(
-                      notes: notes
-                          .where((e) => e.noteType == NoteType.challenges)
-                          .toList()),
-                ],
-              ),
-            ));
-          },
-        ),
-      );
-    }
+      ),
+    );
   }
 }
 

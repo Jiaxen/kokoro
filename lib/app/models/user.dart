@@ -26,7 +26,7 @@ class AppUser {
     return uid == '' ? true : false;
   }
 
-  Map<String, dynamic> appUserToJson() {
+  Map<String, dynamic> toMap() {
     return {
       'uid': uid,
       'email': email,
@@ -34,6 +34,19 @@ class AppUser {
       'photoURL': photoURL,
       'currentGroup': currentGroup
     };
+  }
+
+
+  factory AppUser.fromMap(Map<String, dynamic>? data, String uid) {
+    if (data == null) {
+      throw StateError('missing data for uid: $uid');
+    }
+    return AppUser(uid: uid,
+          email: data['email'],
+          photoURL: data['photoURL'],
+          displayName: data['displayName'],
+          currentGroup: data['currentGroup'],
+    );
   }
 
   Map<String, dynamic> firebaseDetailsToJson() {

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kokoro/utils.dart';
 
-import '../utils.dart';
 
 class Note extends ChangeNotifier {
   String? id;
@@ -15,7 +15,7 @@ class Note extends ChangeNotifier {
   DateTime lastModifiedTime;
 
   Note({
-    this.id,
+    required this.id,
     required this.content,
     required this.noteState,
     required this.noteType,
@@ -27,7 +27,7 @@ class Note extends ChangeNotifier {
   });
 
   /// Serializes this [Note] into a JSON object.
-  Map<String, dynamic> noteToJson() => {
+  Map<String, dynamic> toMap() => {
     'content': content,
     'noteState': enumToString(noteState),
     'noteType': enumToString(noteType),
@@ -58,6 +58,22 @@ class Note extends ChangeNotifier {
     if (updateTimestamp) lastModifiedTime = DateTime.now();
     notifyListeners();
     return this;
+  }
+
+  factory Note.fromMap(Map<String, dynamic>? data, String documentId) {
+    if (data == null) {
+      throw StateError('missing data for NoteId: $documentId');
+    }
+    return Note(id: documentId,
+      content: data['content'],
+      noteState: enumFromString(NoteState.values, data['noteState']) ?? NoteState.current,
+      noteType: enumFromString(NoteType.values, data['noteType']) ?? NoteType.appreciation ,
+      createdTime: (data['createdTime'] as Timestamp).toDate(),
+      sentBy: data['sentBy'],
+      groupId: data['groupId'],
+      meetingId: data['meetingId'],
+      lastModifiedTime: (data['lastModifiedTime'] as Timestamp).toDate(),
+    );
   }
 }
 
