@@ -44,155 +44,157 @@ class _EditNoteScreenState extends ConsumerState<EditNoteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: AlertDialog(
-        insetPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 35, vertical: 50),
-        backgroundColor: kPrimaryBackgroundColour,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(25))),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 30),
-                Text(
-                  'A note of...',
-                  style: TextStyle(
+    return Center(
+      child: SingleChildScrollView(
+        child: AlertDialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 35, vertical: 50),
+          backgroundColor: kPrimaryBackgroundColour,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(25))),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  Text(
+                    'A note of...',
+                    style: TextStyle(
+                        color: kPrimaryTextColour,
+                        fontWeight: FontWeight.w300, // light
+                        fontStyle: FontStyle.italic,
+                        fontSize: 20),
+                  ),
+                  const SizedBox(height: 10),
+                  DropdownButton<String>(
+                    value: dropdownValue,
+                    // icon: const Icon(Icons.a),
+                    elevation: 2,
+                    style: TextStyle(
                       color: kPrimaryTextColour,
-                      fontWeight: FontWeight.w300, // light
-                      fontStyle: FontStyle.italic,
-                      fontSize: 20),
-                ),
-                const SizedBox(height: 10),
-                DropdownButton<String>(
-                  value: dropdownValue,
-                  // icon: const Icon(Icons.a),
-                  elevation: 2,
-                  style: TextStyle(
-                    color: kPrimaryTextColour,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 36,
+                      fontWeight: FontWeight.w300,
+                      fontSize: 36,
+                    ),
+                    dropdownColor: kTextBackgroundColour,
+                    underline: Container(
+                      height: 2,
+                      color: kPrimaryAppColour,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        widget.note.noteType =
+                            enumFromString(NoteType.values, newValue!)!;
+                        dropdownValue = newValue;
+                      });
+                    },
+                    items:
+                        noteTypes.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
-                  dropdownColor: kTextBackgroundColour,
-                  underline: Container(
-                    height: 2,
-                    color: kPrimaryAppColour,
+                  const SizedBox(height: 20),
+                  TextField(
+                      controller: myController,
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        focusColor: kPrimaryAppColour,
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: kSecondaryAppColour, width: 2.0),
+                            borderRadius: const BorderRadius.all(Radius.circular(20))),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        hintText: 'Note for your meeting...',
+                      ),
+                      keyboardType: TextInputType.multiline,
+                      textCapitalization: TextCapitalization.sentences,
+                      minLines: 3,
+                      maxLines: 5),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                              const EdgeInsets.all(15)),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              kWarningBackgroundColorLight),
+                          foregroundColor: MaterialStateProperty.all<Color>(
+                              kPrimaryTitleColour),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                              const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          )),
+                        ),
+                        onPressed: () {
+                          if (myController.text.isEmpty &&
+                              widget.note.id == null) {
+                            // If it is empty and a new note
+                            Navigator.of(context).pop();
+                          } else {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Delete Note?'),
+                                content: const Text(
+                                    'Are you sure you want to delete this note?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.of(context).pop(),
+                                    child: const Text('No, go back!'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      final database = ref.watch(databaseProvider)!;
+                                      database.deleteNote(widget.note);
+                                      FocusScope.of(context).unfocus();
+                                      Navigator.of(context)
+                                          .popUntil((route) => route.isFirst);
+                                    },
+                                    child: const Text('Yes please!'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                        },
+                        child: const Text('Delete'),
+                      ),
+                      TextButton(
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                              const EdgeInsets.all(15)),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(kPrimaryAppColour),
+                          foregroundColor: MaterialStateProperty.all<Color>(
+                              kPrimaryTitleColour),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                              const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          )),
+                        ),
+                        onPressed: () {
+                          if (myController.text.isNotEmpty) {
+                            widget.note.content = myController.text;
+                            widget.note.lastModifiedTime = DateTime.now();
+                            final database = ref.watch(databaseProvider)!;
+                            database.setNote(widget.note);
+                          }
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Save note'),
+                      ),
+                    ],
                   ),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      widget.note.noteType =
-                          enumFromString(NoteType.values, newValue!)!;
-                      dropdownValue = newValue;
-                    });
-                  },
-                  items:
-                      noteTypes.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 20),
-                TextField(
-                    controller: myController,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      focusColor: kPrimaryAppColour,
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: kSecondaryAppColour, width: 2.0),
-                          borderRadius: const BorderRadius.all(Radius.circular(20))),
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      hintText: 'Note for your meeting...',
-                    ),
-                    keyboardType: TextInputType.multiline,
-                    textCapitalization: TextCapitalization.sentences,
-                    minLines: 5,
-                    maxLines: 10),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.all(15)),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            kWarningBackgroundColorLight),
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                            kPrimaryTitleColour),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
-                            const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                        )),
-                      ),
-                      onPressed: () {
-                        if (myController.text.isEmpty &&
-                            widget.note.id == null) {
-                          // If it is empty and a new note
-                          Navigator.of(context).pop();
-                        } else {
-                          showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: const Text('Delete Note?'),
-                              content: const Text(
-                                  'Are you sure you want to delete this note?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text('No, go back!'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    final database = ref.watch(databaseProvider)!;
-                                    database.deleteNote(widget.note);
-                                    FocusScope.of(context).unfocus();
-                                    Navigator.of(context)
-                                        .popUntil((route) => route.isFirst);
-                                  },
-                                  child: const Text('Yes please!'),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text('Delete'),
-                    ),
-                    TextButton(
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.all(15)),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(kPrimaryAppColour),
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                            kPrimaryTitleColour),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
-                            const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                        )),
-                      ),
-                      onPressed: () {
-                        if (myController.text.isNotEmpty) {
-                          widget.note.content = myController.text;
-                          widget.note.lastModifiedTime = DateTime.now();
-                          final database = ref.watch(databaseProvider)!;
-                          database.setNote(widget.note);
-                        }
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Save note'),
-                    ),
-                  ],
-                ),
-              ]),
+                ]),
+          ),
         ),
       ),
     );

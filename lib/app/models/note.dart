@@ -38,28 +38,6 @@ class Note extends ChangeNotifier {
     'lastModifiedTime': Timestamp.fromDate(lastModifiedTime),
   };
 
-  /// Update this [Note] with specified properties.
-  ///
-  /// If [updateTimestamp] is `true`, which is the default,
-  /// `modifiedAt` will be updated to `DateTime.now()`.
-  Note updateWith({
-    String? content,
-    NoteState? noteState,
-    NoteType? noteType,
-    String? meetingId,
-    String? groupId,
-    bool updateTimestamp = true,
-  }) {
-    if (content != null) this.content = content;
-    if (noteState != null) this.noteState = noteState;
-    if (noteType != null) this.noteType = noteType;
-    if (meetingId != null) this.meetingId = meetingId;
-    if (groupId != null) this.groupId = groupId;
-    if (updateTimestamp) lastModifiedTime = DateTime.now();
-    notifyListeners();
-    return this;
-  }
-
   factory Note.fromMap(Map<String, dynamic>? data, String documentId) {
     if (data == null) {
       throw StateError('missing data for NoteId: $documentId');
