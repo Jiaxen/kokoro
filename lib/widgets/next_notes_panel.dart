@@ -149,26 +149,7 @@ class NextNotesTab extends StatelessWidget {
                 return Column(
                   children: [
                     SizedBox(height:10),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: kTextBackgroundColour,
-                          borderRadius: BorderRadius.all(Radius.circular(25))),
-                      child: InkWell(
-                          splashColor: Colors.blue.withAlpha(30),
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => EditNoteScreen(
-                                  note: notes[index]),
-                            );
-                          },
-                          child: ListTile(
-                            leading: Icon(Icons.favorite),
-                            title: Text('${notes[index].content}'),
-                            subtitle: Text('${notes[index].lastModifiedTime}'),
-                          ),
-                    ),),
+                    NoteTile(notes: notes, index: index,),
                     SizedBox(height:10),
                   ],
                 );
@@ -176,6 +157,57 @@ class NextNotesTab extends StatelessWidget {
           );
       }),
     );
+  }
+}
+
+class NoteTile extends StatelessWidget {
+  const NoteTile({
+    Key? key,
+    required this.notes, required this.index,
+  }) : super(key: key);
+
+  final List<Note> notes;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    Icon icon;
+
+    switch(notes[index].noteType){
+      case NoteType.appreciation:
+        icon = Icon(Icons.favorite_border);
+        break;
+      case NoteType.plans:
+        icon = Icon(Icons.beach_access);
+        break;
+      case NoteType.chores:
+        icon = Icon(Icons.cleaning_services);
+        break;
+      case NoteType.challenges:
+        icon = Icon(Icons.error_outline);
+        break;
+    }
+
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          color: kTextBackgroundColour,
+          borderRadius: BorderRadius.all(Radius.circular(25))),
+      child: InkWell(
+          splashColor: Colors.blue.withAlpha(30),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) => EditNoteScreen(
+                  note: notes[index]),
+            );
+          },
+          child: ListTile(
+            leading: icon,
+            title: Text('${notes[index].content}'),
+            subtitle: Text('${notes[index].lastModifiedTime}'),
+          ),
+    ),);
   }
 }
 
