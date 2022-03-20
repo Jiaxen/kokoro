@@ -5,7 +5,6 @@ import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/app/screens/edit_note_screen.dart';
 import 'package:kokoro/app/top_level_providers.dart';
 import '../constants.dart';
-import 'package:kokoro/services/note_services.dart';
 
 class NextNotesTabBar extends StatelessWidget {
   const NextNotesTabBar({

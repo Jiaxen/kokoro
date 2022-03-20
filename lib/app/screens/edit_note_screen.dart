@@ -4,7 +4,6 @@ import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
 import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/routing/app_router.dart';
-import 'package:kokoro/services/note_services.dart';
 import 'package:kokoro/utils.dart';
 
 class EditNoteScreen extends ConsumerStatefulWidget {

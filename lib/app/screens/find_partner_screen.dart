@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kokoro/app/models/group.dart';
-import 'package:kokoro/app/models/user.dart';
 import 'package:kokoro/app/top_level_providers.dart';
-import 'package:kokoro/services/group_services.dart';
 import 'dart:math' as math;
 import 'package:kokoro/constants.dart';
 
