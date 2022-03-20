@@ -126,18 +126,7 @@ class _FindPartnerScreenState extends ConsumerState<FindPartnerScreen> {
         Container(
           alignment: Alignment.topRight,
           child: TextButton(
-            style: ButtonStyle(
-              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                  const EdgeInsets.symmetric(vertical: 15, horizontal: 25)),
-              backgroundColor: MaterialStateProperty.all<Color>(
-                  kWarningBackgroundColorLight),
-              foregroundColor:
-                  MaterialStateProperty.all<Color>(kPrimaryTitleColour),
-              shape: MaterialStateProperty.all<OutlinedBorder>(
-                  const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-              )),
-            ),
+            style: roundButtonStyle(kPrimaryTitleColour, kWarningBackgroundColorLight),
             onPressed: () {
               if (myController.text != "") {
                 group.invitedMembers != null

@@ -58,7 +58,7 @@ class _EditNoteScreenState extends ConsumerState<EditNoteScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   Text(
                     'A note of...',
                     style: TextStyle(
@@ -115,24 +115,13 @@ class _EditNoteScreenState extends ConsumerState<EditNoteScreen> {
                       keyboardType: TextInputType.multiline,
                       textCapitalization: TextCapitalization.sentences,
                       minLines: 3,
-                      maxLines: 5),
+                      maxLines: 3),
                   const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButton(
-                        style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                              const EdgeInsets.all(15)),
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              kWarningBackgroundColorLight),
-                          foregroundColor: MaterialStateProperty.all<Color>(
-                              kPrimaryTitleColour),
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                              const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                          )),
-                        ),
+                        style: roundButtonStyle(kPrimaryTitleColour, kWarningBackgroundColorLight),
                         onPressed: () {
                           if (myController.text.isEmpty &&
                               widget.note.id == null) {
@@ -142,13 +131,16 @@ class _EditNoteScreenState extends ConsumerState<EditNoteScreen> {
                             showDialog<String>(
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
+                                insetPadding: const EdgeInsets.symmetric(horizontal: 35, vertical: 50),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(25))),
                                 title: const Text('Delete Note?'),
                                 content: const Text(
-                                    'Are you sure you want to delete this note?'),
+                                    'This will delete the note forever.'),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () => Navigator.of(context).pop(),
-                                    child: const Text('No, go back!'),
+                                    child: const Text('CANCEL'),
                                   ),
                                   TextButton(
                                     onPressed: () {
@@ -158,7 +150,7 @@ class _EditNoteScreenState extends ConsumerState<EditNoteScreen> {
                                       Navigator.of(context)
                                           .popUntil((route) => route.isFirst);
                                     },
-                                    child: const Text('Yes please!'),
+                                    child: const Text('DELETE'),
                                   ),
                                 ],
                               ),
@@ -168,18 +160,7 @@ class _EditNoteScreenState extends ConsumerState<EditNoteScreen> {
                         child: const Text('Delete'),
                       ),
                       TextButton(
-                        style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                              const EdgeInsets.all(15)),
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(kPrimaryAppColour),
-                          foregroundColor: MaterialStateProperty.all<Color>(
-                              kPrimaryTitleColour),
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                              const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                          )),
-                        ),
+                        style: roundButtonStyle(kPrimaryTitleColour, kPrimaryAppColour),
                         onPressed: () {
                           if (myController.text.isNotEmpty) {
                             widget.note.content = myController.text;
