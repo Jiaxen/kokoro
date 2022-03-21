@@ -18,6 +18,7 @@ class FirestoreDatabase {
       _service.updateData(
         documentPath: FirestorePath.user(uid),
         data: appUser.toMap(),
+        merge: true,
       );
 
   Stream<AppUser> appUserStream() {

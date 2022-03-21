@@ -15,8 +15,9 @@ import 'package:kokoro/app/screens/edit_note_screen.dart';
 
 class NotesScreen extends ConsumerStatefulWidget {
   static const String id = 'notes_screen';
+  final AppUser appUser;
 
-  const NotesScreen({Key? key}) : super(key: key);
+  const NotesScreen(this.appUser, {Key? key}) : super(key: key);
 
   @override
   _NotesScreenState createState() => _NotesScreenState();
@@ -45,12 +46,7 @@ class _NotesScreenState extends ConsumerState<NotesScreen>
     return ProgressHUD(
       child: Builder(
         builder: (context) {
-          final appUserAsyncValue = ref.watch(userProvider);
-          return appUserAsyncValue.when(
-            data: (appUser) => NotesDisplay(tabController: _tabController, auth: _auth, appUser: appUser,),
-            loading: () => Container(),
-            error: (_,__) => Container(),
-          );
+          return NotesDisplay(tabController: _tabController, auth: _auth, appUser: widget.appUser,);
               },
             ),
           );

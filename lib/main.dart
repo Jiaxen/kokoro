@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kokoro/app/login/login_screen.dart';
+import 'package:kokoro/app/screens/empty_content.dart';
 import 'package:kokoro/app/screens/notes_screen.dart';
+import 'package:kokoro/app/screens/onboarding.dart';
 import 'package:kokoro/routing/app_router.dart';
 import 'package:kokoro/services/shared_preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +32,6 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firebaseAuth = ref.watch(firebaseAuthProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       builder: (context, child) {
@@ -41,10 +42,21 @@ class MyApp extends ConsumerWidget {
       },
       home: AuthWidget(
         nonSignedInBuilder: (_) => LoginScreen(),
-        signedInBuilder: (_) => NotesScreen(),
+        signedInBuilder: (_) => OnboardingCheck(ref),
       ),
       onGenerateRoute: (settings) =>
           AppRouter.onGenerateRoute(settings),
+    );
+  }
+
+  Widget OnboardingCheck(WidgetRef ref) {
+    final userAsyncValue = ref.watch(userProvider);
+    return userAsyncValue.when(
+      data: (user) => user.currentGroup == null
+          ? OnboardingPage()
+          : NotesScreen(user),
+      loading: () => EmptyContent(),
+      error: (_, __) => EmptyContent(),
     );
   }
 }

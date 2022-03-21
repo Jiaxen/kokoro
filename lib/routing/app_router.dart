@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kokoro/app/models/note.dart';
+import 'package:kokoro/app/models/user.dart';
 import 'package:kokoro/app/screens/edit_note_screen.dart';
 import 'package:kokoro/app/screens/find_partner_screen.dart';
 import 'package:kokoro/app/screens/notes_screen.dart';
@@ -24,7 +25,7 @@ class AppRouter {
         );
       case AppRoutes.notesScreen:
         return MaterialPageRoute<dynamic>(
-          builder: (_) => NotesScreen(),
+          builder: (_) => NotesScreen(args as AppUser),
           settings: settings,
           fullscreenDialog: true,
         );

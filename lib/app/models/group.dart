@@ -17,12 +17,23 @@ class Group extends ChangeNotifier{
     this.createdTime,
   });
 
+  // Initial value when loading or when error
   static Group initial = Group(
-    groupId: null,
+    groupId: 'initial',
     members: []
   );
 
   bool isInitial(){
+    return groupId == 'initial';
+  }
+
+  // If user is just created, they have no group
+  static Group noGroup = Group(
+    groupId: null,
+    members: []
+  );
+
+  bool isNoGroup(){
     return groupId == null;
   }
 

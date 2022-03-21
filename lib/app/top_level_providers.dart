@@ -6,10 +6,10 @@ import 'package:kokoro/services/firestore_database.dart';
 import 'package:logger/logger.dart';
 
 final firebaseAuthProvider =
-Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
+    Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
 final authStateChangesProvider = StreamProvider<User?>(
-        (ref) => ref.watch(firebaseAuthProvider).authStateChanges());
+    (ref) => ref.watch(firebaseAuthProvider).authStateChanges());
 
 final databaseProvider = Provider<FirestoreDatabase?>((ref) {
   final auth = ref.watch(authStateChangesProvider);
@@ -29,14 +29,15 @@ final groupProvider = StreamProvider<Group>((ref) {
   final database = ref.watch(databaseProvider)!;
   final userAsyncValue = ref.watch(userProvider);
   return userAsyncValue.when(
-    data: (user) => database.groupStream(groupId: user.currentGroup!),
+    data: (user) => user.currentGroup == null
+        ? Stream.value(Group.noGroup)
+        : database.groupStream(groupId: user.currentGroup!),
     loading: () => Stream.value(Group.initial),
-    error: (_,__) => Stream.value(Group.initial),
+    error: (_, __) => Stream.value(Group.initial),
   );
 });
 
-final loggerProvider = Provider<Logger>((ref) =>
-    Logger(
+final loggerProvider = Provider<Logger>((ref) => Logger(
       printer: PrettyPrinter(
         methodCount: 1,
         printEmojis: false,
