@@ -108,10 +108,7 @@ class NotesDisplay extends StatelessWidget {
                       SizedBox(height: 15),
                       Text(
                         'Kokoro',
-                        style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w700,
-                            color: kPrimaryTitleColour),
+                        style: mainTitleStyle(),
                       ),
                       Text(
                         'Relationship Meetings',
@@ -142,5 +139,6 @@ class NotesDisplay extends StatelessWidget {
           ),
         ));
   }
+
 }
 

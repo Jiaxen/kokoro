@@ -19,11 +19,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       backgroundColor: kPrimaryAppColour,
       body: Theme(
         data: ThemeData(
-            accentColor: Colors.orange,
-            primarySwatch: Colors.orange,
-            colorScheme: ColorScheme.light(
-                primary: Colors.orange
-            )
+          colorScheme: Theme.of(context).colorScheme.copyWith(
+            primary: kPrimaryAppColour,
+          ),
         ),
         child: Stepper(
           type: StepperType.horizontal,
@@ -78,6 +76,11 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         alignment: Alignment.centerLeft,
-        child: const Text('Content for Step 1'));
+        child: Column(
+          children: [
+            Text('Hi there 🤗 !', style: mainTitleStyle(),),
+
+          ],
+        ));
   }
 }

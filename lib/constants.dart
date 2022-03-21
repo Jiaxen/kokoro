@@ -26,3 +26,11 @@ ButtonStyle roundButtonStyle(Color foregroundColour, Color backgroundColour) {
         )),
   );
 }
+
+
+TextStyle mainTitleStyle() {
+  return TextStyle(
+      fontSize: 28,
+      fontWeight: FontWeight.w700,
+      color: kPrimaryTitleColour);
+}
