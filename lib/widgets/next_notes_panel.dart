@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/app/screens/edit_note_screen.dart';
 import 'package:kokoro/app/top_level_providers.dart';
-import '../constants.dart';
+import 'package:kokoro/constants.dart';
 
 class NextNotesTabBar extends StatelessWidget {
   const NextNotesTabBar({
@@ -19,9 +19,7 @@ class NextNotesTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return TabBar(
       padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
-      indicator: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: kSecondaryAppColour),
+      indicator: roundedBoxDecoration(),
       labelStyle:
           const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
       isScrollable: true,
@@ -32,11 +30,10 @@ class NextNotesTabBar extends StatelessWidget {
 }
 
 final notesStreamProvider =
-StreamProvider.autoDispose.family<List<Note>, String>((ref, groupId) {
+    StreamProvider.autoDispose.family<List<Note>, String>((ref, groupId) {
   final database = ref.watch(databaseProvider)!;
   return database.notesStream(groupId: groupId);
 });
-
 
 class NextNotesTabs extends ConsumerWidget {
   const NextNotesTabs({
@@ -53,12 +50,12 @@ class NextNotesTabs extends ConsumerWidget {
     if (user.currentGroup == null) {
       return LoadingNotes();
     } else {
-    final notes = ref.watch(notesStreamProvider(user.currentGroup!));
-    return notes.when(
-    data: (notes) => ShowNotes(tabController: _tabController, notes: notes),
-    loading: () => LoadingNotes(),
-    error: (_, __) => LoadingNotes(),
-    );
+      final notes = ref.watch(notesStreamProvider(user.currentGroup!));
+      return notes.when(
+        data: (notes) => ShowNotes(tabController: _tabController, notes: notes),
+        loading: () => LoadingNotes(),
+        error: (_, __) => LoadingNotes(),
+      );
     }
   }
 }
@@ -66,11 +63,13 @@ class NextNotesTabs extends ConsumerWidget {
 class ShowNotes extends StatelessWidget {
   final tabController;
   final notes;
+
   const ShowNotes({Key? key, this.tabController, this.notes}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(child:Container(
+    return Expanded(
+        child: Container(
       color: kPrimaryAppColour,
       child: TabBarView(
         physics: CustomTabBarViewScrollPhysics(),
@@ -81,23 +80,20 @@ class ShowNotes extends StatelessWidget {
                   .where((e) => e.noteType == NoteType.appreciation)
                   .toList()),
           NextNotesTab(
-              notes: notes
-                  .where((e) => e.noteType == NoteType.chores)
-                  .toList()),
+              notes:
+                  notes.where((e) => e.noteType == NoteType.chores).toList()),
           NextNotesTab(
-              notes: notes
-                  .where((e) => e.noteType == NoteType.plans)
-                  .toList()),
+              notes: notes.where((e) => e.noteType == NoteType.plans).toList()),
           NextNotesTab(
               notes: notes
                   .where((e) => e.noteType == NoteType.challenges)
                   .toList()),
         ],
       ),
-    ));;
+    ));
+    ;
   }
 }
-
 
 class LoadingNotes extends StatelessWidget {
   const LoadingNotes({
@@ -108,7 +104,7 @@ class LoadingNotes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        color:  kPrimaryAppColour,
+        color: kPrimaryAppColour,
         child: Container(
           decoration: const BoxDecoration(
               color: Colors.white,
@@ -137,23 +133,23 @@ class NextNotesTab extends StatelessWidget {
       decoration: BoxDecoration(
           color: kPrimaryBackgroundColour,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25),
-              topRight: Radius.circular(25))),
+              topLeft: Radius.circular(25), topRight: Radius.circular(25))),
       child: Builder(builder: (BuildContext context) {
-        return
-          ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
-              itemCount: notes.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  children: [
-                    SizedBox(height:10),
-                    NoteTile(notes: notes, index: index,),
-                    SizedBox(height:10),
-                  ],
-                );
-              }
-          );
+        return ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+            itemCount: notes.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Column(
+                children: [
+                  SizedBox(height: 10),
+                  NoteTile(
+                    notes: notes,
+                    index: index,
+                  ),
+                  SizedBox(height: 10),
+                ],
+              );
+            });
       }),
     );
   }
@@ -162,7 +158,8 @@ class NextNotesTab extends StatelessWidget {
 class NoteTile extends StatelessWidget {
   const NoteTile({
     Key? key,
-    required this.notes, required this.index,
+    required this.notes,
+    required this.index,
   }) : super(key: key);
 
   final List<Note> notes;
@@ -172,7 +169,7 @@ class NoteTile extends StatelessWidget {
   Widget build(BuildContext context) {
     Icon icon;
 
-    switch(notes[index].noteType){
+    switch (notes[index].noteType) {
       case NoteType.appreciation:
         icon = Icon(Icons.favorite_border);
         break;
@@ -193,20 +190,20 @@ class NoteTile extends StatelessWidget {
           color: kTextBackgroundColour,
           borderRadius: BorderRadius.all(Radius.circular(25))),
       child: InkWell(
-          splashColor: Colors.blue.withAlpha(30),
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) => EditNoteScreen(
-                  note: notes[index]),
-            );
-          },
-          child: ListTile(
-            leading: icon,
-            title: Text('${notes[index].content}'),
-            subtitle: Text('${notes[index].lastModifiedTime}'),
-          ),
-    ),);
+        splashColor: Colors.blue.withAlpha(30),
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) => EditNoteScreen(note: notes[index]),
+          );
+        },
+        child: ListTile(
+          leading: icon,
+          title: Text('${notes[index].content}'),
+          subtitle: Text('${notes[index].lastModifiedTime}'),
+        ),
+      ),
+    );
   }
 }
 
@@ -221,8 +218,8 @@ class CustomTabBarViewScrollPhysics extends ScrollPhysics {
 
   @override
   SpringDescription get spring => const SpringDescription(
-    mass: 200,
-    stiffness: 100,
-    damping: 1,
-  );
+        mass: 200,
+        stiffness: 100,
+        damping: 1,
+      );
 }

@@ -13,7 +13,6 @@ Color kPrimaryBackgroundColour = Colors.white;
 Color kSecondaryBackgroundColour = const Color(0xFFAAAAAA);
 Color kTextBackgroundColour = const Color(0xFFF3F3F3);
 
-
 ButtonStyle roundButtonStyle(Color foregroundColour, Color backgroundColour) {
   return ButtonStyle(
     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
@@ -33,4 +32,19 @@ TextStyle mainTitleStyle() {
       fontSize: 28,
       fontWeight: FontWeight.w700,
       color: kPrimaryTitleColour);
+}
+
+Widget roundedTextBox(Widget child){
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+    decoration: roundedBoxDecoration(),
+    child: child,
+  );
+}
+
+
+BoxDecoration roundedBoxDecoration() {
+  return BoxDecoration(
+      color: kSecondaryAppColour,
+      borderRadius: BorderRadius.all(Radius.circular(12),),);
 }
