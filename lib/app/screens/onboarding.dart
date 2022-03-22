@@ -87,6 +87,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     groupName: groupNameController.text,
                     members: [user.uid],
                     invitedMembers: [partnerEmailController.text],
+                    createdTime: DateTime.now()
                   );
                   DocumentReference newGroupDocument = await database.addGroup(newGroup);
                   user.currentGroup = newGroupDocument.id;
