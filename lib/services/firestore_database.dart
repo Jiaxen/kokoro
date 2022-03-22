@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kokoro/app/models/group.dart';
 import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/app/models/user.dart';
@@ -34,19 +35,17 @@ class FirestoreDatabase {
   );
 
   Future<void> setGroup(Group group) {
-    if (group.groupId != null){
-      // Update note in Firebase
       return _service.updateData(
         documentPath: FirestorePath.group(group.groupId!),
         data: group.toMap(),
       );
-    }else{
-      // Create note in Firebase if note.id is null
-      return _service.addData(
-        collectionPath: FirestorePath.groups(),
-        data: group.toMap(),
-      );
-    }
+  }
+
+  Future<DocumentReference> addGroup(Group group){
+    return _service.addData(
+      collectionPath: FirestorePath.groups(),
+      data: group.toMap(),
+    );
   }
 
   Stream<Note> noteStream({required String noteId, required String groupId}) => _service.documentStream(
