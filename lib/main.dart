@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:kokoro/app/login/login_screen.dart';
+import 'package:kokoro/app/screens/login_screen.dart';
 import 'package:kokoro/app/screens/empty_content.dart';
 import 'package:kokoro/app/screens/notes_screen.dart';
 import 'package:kokoro/app/screens/onboarding.dart';

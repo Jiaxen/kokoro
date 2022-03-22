@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kokoro/app/models/user.dart';
 import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
-import 'package:kokoro/services/firestore_database.dart';
 import 'package:kokoro/services/login_utils.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -73,7 +72,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         progress?.show();
                         final firebaseAuth = ref.watch(firebaseAuthProvider);
                         try {
-                          UserCredential user = await signInWithGoogle(firebaseAuth);
+                          UserCredential user =
+                              await signInWithGoogle(firebaseAuth);
                           saveFirebaseUserToFirestore(user.user!);
                         } catch (e) {
                           _errorMessage = e.toString();
@@ -81,19 +81,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         progress?.dismiss();
                       }),
                       SignInButton(Buttons.Facebook,
-                          text: 'Continue with Facebook',
-                          onPressed: () async {
-                            final progress = ProgressHUD.of(context);
-                            progress?.show();
-                            try {
-                              final firebaseAuth = ref.watch(firebaseAuthProvider);
-                              UserCredential user = await signInWithFacebook(firebaseAuth);
-                              saveFirebaseUserToFirestore(user.user!);
-                            } catch (e) {
-                              _errorMessage = e.toString();
-                            }
-                            progress?.dismiss();
-                          }),
+                          text: 'Continue with Facebook', onPressed: () async {
+                        final progress = ProgressHUD.of(context);
+                        progress?.show();
+                        try {
+                          final firebaseAuth = ref.watch(firebaseAuthProvider);
+                          UserCredential user =
+                              await signInWithFacebook(firebaseAuth);
+                          saveFirebaseUserToFirestore(user.user!);
+                        } catch (e) {
+                          _errorMessage = e.toString();
+                        }
+                        progress?.dismiss();
+                      }),
                       if (_errorMessage != null) _buildLoginMessage(),
                     ],
                   ),
@@ -121,11 +121,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   void saveFirebaseUserToFirestore(User firebaseUser) {
     final database = ref.watch(databaseProvider)!;
     AppUser appUser = AppUser(
-    uid: firebaseUser.uid,
-    email: firebaseUser.email,
-    displayName: firebaseUser.displayName,
-    photoURL: firebaseUser.photoURL,
-  );
+      uid: firebaseUser.uid,
+      email: firebaseUser.email,
+      displayName: firebaseUser.displayName,
+      photoURL: firebaseUser.photoURL,
+    );
     database.setUser(appUser);
   }
 }
