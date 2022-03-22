@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:kokoro/app/screens/login_screen.dart';
 import 'package:kokoro/app/screens/empty_content.dart';
 import 'package:kokoro/app/screens/notes_screen.dart';
-import 'package:kokoro/app/screens/onboarding.dart';
+import 'package:kokoro/app/screens/onboarding/onboarding.dart';
 import 'package:kokoro/routing/app_router.dart';
 import 'package:kokoro/services/shared_preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,7 +53,7 @@ class MyApp extends ConsumerWidget {
     final userAsyncValue = ref.watch(userProvider);
     return userAsyncValue.when(
       data: (user) => user.currentGroup == null
-          ? OnboardingPage()
+          ? OnboardingPage(user)
           : NotesScreen(user),
       loading: () => EmptyContent(),
       error: (_, __) => EmptyContent(),
