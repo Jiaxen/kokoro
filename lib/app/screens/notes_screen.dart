@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
 import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/app/screens/drawer.dart';
-import 'package:kokoro/widgets/group_management_card.dart';
-import 'package:kokoro/widgets/next_notes_panel.dart';
+import 'package:kokoro/app/widgets/group_management_card.dart';
+import 'package:kokoro/app/widgets/next_notes_panel.dart';
 import 'package:flutter/services.dart';
-import 'package:kokoro/widgets/user_image.dart';
+import 'package:kokoro/app/widgets/user_image.dart';
 import 'package:kokoro/app/models/user.dart';
 import 'package:kokoro/app/screens/edit_note_screen.dart';
 

@@ -91,7 +91,6 @@ class ShowNotes extends StatelessWidget {
         ],
       ),
     ));
-    ;
   }
 }
 
