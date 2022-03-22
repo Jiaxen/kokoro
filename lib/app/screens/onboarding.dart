@@ -18,7 +18,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   final partnerEmailController = TextEditingController();
   final groupNameController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,23 +29,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               ),
         ),
         child: Stepper(
-          controlsBuilder: (_,__){return Container();},
+          controlsBuilder: (_, __) {
+            return Container();
+          },
           type: StepperType.horizontal,
           currentStep: _index,
-          onStepCancel: () {
-            if (_index > 0) {
-              setState(() {
-                _index -= 1;
-              });
-            }
-          },
-          onStepContinue: () {
-            if (_index <= 1) {
-              setState(() {
-                _index += 1;
-              });
-            }
-          },
           steps: <Step>[
             Step(
               isActive: _index >= 0,
@@ -65,14 +52,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               content: AddPartnerStep(
                 emailController: partnerEmailController,
                 nextStep: () {
-                setState(() {
-                  _index += 1;
-                });
-              }, previousStep: () {
-                setState(() {
-                  _index -= 1;
-                });
-              }, ),
+                  setState(() {
+                    _index += 1;
+                  });
+                },
+                previousStep: () {
+                  setState(() {
+                    _index -= 1;
+                  });
+                },
+              ),
             ),
             Step(
               isActive: _index >= 2,
@@ -84,22 +73,21 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   final user = ref.watch(userProvider).value!;
 
                   Group newGroup = Group(
-                    groupName: groupNameController.text,
-                    members: [user.uid],
-                    invitedMembers: [partnerEmailController.text],
-                    createdTime: DateTime.now()
-                  );
-                  DocumentReference newGroupDocument = await database.addGroup(newGroup);
+                      groupName: groupNameController.text,
+                      members: [user.uid],
+                      invitedMembers: [partnerEmailController.text],
+                      createdTime: DateTime.now());
+                  DocumentReference newGroupDocument =
+                      await database.addGroup(newGroup);
                   user.currentGroup = newGroupDocument.id;
                   database.setUser(user);
+                  setState(() {});
+                },
+                previousStep: () {
                   setState(() {
-
-                });
-              }, previousStep: () {
-                setState(() {
-                  _index -= 1;
-                });
-              },
+                    _index -= 1;
+                  });
+                },
               ),
             ),
           ],
@@ -109,7 +97,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 }
 
-class WelcomeStep extends StatelessWidget {
+class WelcomeStep extends StatefulWidget {
   final Function nextStep;
 
   const WelcomeStep({
@@ -118,61 +106,159 @@ class WelcomeStep extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    FocusManager.instance.primaryFocus?.unfocus();
+  State<WelcomeStep> createState() => _WelcomeStepState();
+}
+
+class _WelcomeStepState extends State<WelcomeStep>
+    with TickerProviderStateMixin {
+
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(seconds: 4),
+    vsync: this,
+  );
+
+  late final Animation<double> _animation1 = Tween<double>(
+    begin: 0,
+    end: 1,
+  ).animate(
+    CurvedAnimation(
+      parent: _controller,
+      curve: Interval(
+        0.050, 0.150,
+        curve: Curves.ease,
+      ),
+    ),
+  );
+
+  late final Animation<double> _animation2 = Tween<double>(
+    begin: 0,
+    end: 1,
+  ).animate(
+    CurvedAnimation(
+      parent: _controller,
+      curve: Interval(
+        0.250, 0.400,
+        curve: Curves.ease,
+      ),
+    ),
+  );
+
+  late final Animation<double> _animation3 = Tween<double>(
+    begin: 0,
+    end: 1,
+  ).animate(
+    CurvedAnimation(
+      parent: _controller,
+      curve: Interval(
+        0.500, 0.650,
+        curve: Curves.ease,
+      ),
+    ),
+  );
+
+  late final Animation<double> _animation4 = Tween<double>(
+    begin: 0,
+    end: 1,
+  ).animate(
+    CurvedAnimation(
+      parent: _controller,
+      curve: Interval(
+        0.800, 1.000,
+        curve: Curves.ease,
+      ),
+    ),
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Widget _buildAnimation(BuildContext context, Widget? child){
     return Container(
         alignment: Alignment.centerLeft,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            roundedTextBox(
-              Text(
-                'Hi there 🤗 !',
-                style: mainTitleStyle(),
-              ),
-            ),
-            SizedBox(height: 15),
-            roundedTextBox(
-              Text(
-                'Welcome to Kokoro!',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                  color: kPrimaryTitleColour,
+            Opacity(
+              opacity: _animation1.value,
+              child: roundedTextBox(
+                Text(
+                  'Hi there 🤗 !',
+                  style: mainTitleStyle(),
                 ),
               ),
             ),
             SizedBox(height: 15),
-            roundedTextBox(
-              Text(
-                'We hope this app will help you\nand your partner to strengthen\n your relationship.',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                  color: kPrimaryTitleColour,
+            Opacity(
+              opacity: _animation2.value,
+              child:             roundedTextBox(
+                Text(
+                  'Welcome to Kokoro!',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: kPrimaryTitleColour,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 15),
+            Opacity(
+              opacity: _animation3.value,
+              child: roundedTextBox(
+                Text(
+                  'We hope this app will help you\nand your partner to strengthen\n your relationship.',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: kPrimaryTitleColour,
+                  ),
                 ),
               ),
             ),
             SizedBox(height: 25),
-            Center(
-              child: Image(
-                image: AssetImage('images/ReadingCouple.png'), height: 180,),
+            Opacity(
+              opacity: _animation4.value,
+              child: Column(
+                children: [
+                  Center(
+                    child: Image(
+                      image: AssetImage('images/ReadingCouple.png'),
+                      height: 180,
+                    ),
+                  ),
+                  SizedBox(height: 25),
+                  Container(
+                    alignment: Alignment.bottomRight,
+                    child: TextButton(
+                        style: roundButtonStyle(
+                            kPrimaryTitleColour, kWarningBackgroundColorLight),
+                        child: const Text('Get Started 👉'),
+                        onPressed: () {
+                          widget.nextStep();
+                        }),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 25),
-            Container(
-              alignment: Alignment.bottomRight,
-              child: TextButton(
-                style: roundButtonStyle(kPrimaryTitleColour, kWarningBackgroundColorLight),
-                  child: const Text('Get Started 👉'),
-                  onPressed: () {
-                    nextStep();
-                  }),
-            ),
-
           ],
         ));
   }
+
+  @override
+  Widget build(BuildContext context) {
+    FocusManager.instance.primaryFocus?.unfocus();
+    _controller.forward();
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: _buildAnimation,
+    );
+  }
+
 }
+
 class AddPartnerStep extends StatefulWidget {
   final Function nextStep;
   final Function previousStep;
@@ -188,6 +274,7 @@ class AddPartnerStep extends StatefulWidget {
   @override
   State<AddPartnerStep> createState() => _AddPartnerStepState();
 }
+
 class _AddPartnerStepState extends State<AddPartnerStep> {
   bool emailError = false;
 
@@ -227,15 +314,15 @@ class _AddPartnerStepState extends State<AddPartnerStep> {
             SizedBox(height: 10),
             TextField(
                 controller: widget.emailController,
-                autofocus: true,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: kTextBackgroundColour,
                   focusColor: kTextBackgroundColour,
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: kTextBackgroundColour, width: 0.0),
-                      borderRadius: const BorderRadius.all(Radius.circular(20))),
+                      borderSide:
+                          BorderSide(color: kTextBackgroundColour, width: 0.0),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(20))),
                   border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
@@ -245,10 +332,15 @@ class _AddPartnerStepState extends State<AddPartnerStep> {
                 textCapitalization: TextCapitalization.sentences,
                 minLines: 1),
             SizedBox(height: 12),
-            emailError ? Text('Please enter a valid email', style:TextStyle(
-              fontSize: 14,
-              color: kErrorTextColorLight,
-            ),) : SizedBox(),
+            emailError
+                ? Text(
+                    'Please enter a valid email',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: kErrorTextColorLight,
+                    ),
+                  )
+                : SizedBox(),
             SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -256,7 +348,8 @@ class _AddPartnerStepState extends State<AddPartnerStep> {
                 Container(
                   alignment: Alignment.bottomRight,
                   child: TextButton(
-                    style: roundButtonStyle(kPrimaryTitleColour, kSecondaryBackgroundColour),
+                      style: roundButtonStyle(
+                          kPrimaryTitleColour, kSecondaryBackgroundColour),
                       child: const Text('Back'),
                       onPressed: () {
                         widget.previousStep();
@@ -265,25 +358,27 @@ class _AddPartnerStepState extends State<AddPartnerStep> {
                 Container(
                   alignment: Alignment.bottomRight,
                   child: TextButton(
-                    style: roundButtonStyle(kPrimaryTitleColour, kWarningBackgroundColorLight),
+                      style: roundButtonStyle(
+                          kPrimaryTitleColour, kWarningBackgroundColorLight),
                       child: const Text('Continue 👉'),
                       onPressed: () {
-                      if(EmailValidator.validate(widget.emailController.text)){
-                        widget.nextStep();
-                      } else {
-                        setState(() {
-                          emailError = true;
-                        });
-                      }
+                        if (EmailValidator.validate(
+                            widget.emailController.text)) {
+                          widget.nextStep();
+                        } else {
+                          setState(() {
+                            emailError = true;
+                          });
+                        }
                       }),
                 ),
               ],
             ),
-
           ],
         ));
   }
 }
+
 class AddGroupStep extends StatelessWidget {
   final Function nextStep;
   final Function previousStep;
@@ -323,15 +418,15 @@ class AddGroupStep extends StatelessWidget {
             SizedBox(height: 25),
             TextField(
                 controller: groupController,
-                autofocus: true,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: kTextBackgroundColour,
                   focusColor: kTextBackgroundColour,
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: kTextBackgroundColour, width: 0.0),
-                      borderRadius: const BorderRadius.all(Radius.circular(20))),
+                      borderSide:
+                          BorderSide(color: kTextBackgroundColour, width: 0.0),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(20))),
                   border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
@@ -340,8 +435,6 @@ class AddGroupStep extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 textCapitalization: TextCapitalization.sentences,
                 minLines: 1),
-            Image(alignment: Alignment.center,
-                image: AssetImage('images/HeartManDoodle.png'), height: 170,),
             SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -349,7 +442,8 @@ class AddGroupStep extends StatelessWidget {
                 Container(
                   alignment: Alignment.bottomRight,
                   child: TextButton(
-                      style: roundButtonStyle(kPrimaryTitleColour, kSecondaryBackgroundColour),
+                      style: roundButtonStyle(
+                          kPrimaryTitleColour, kSecondaryBackgroundColour),
                       child: const Text('Back'),
                       onPressed: () {
                         FocusManager.instance.primaryFocus?.unfocus();
@@ -359,7 +453,8 @@ class AddGroupStep extends StatelessWidget {
                 Container(
                   alignment: Alignment.bottomRight,
                   child: TextButton(
-                      style: roundButtonStyle(kPrimaryTitleColour, kWarningBackgroundColorLight),
+                      style: roundButtonStyle(
+                          kPrimaryTitleColour, kWarningBackgroundColorLight),
                       child: const Text('Finish 👉'),
                       onPressed: () {
                         nextStep();
@@ -367,7 +462,6 @@ class AddGroupStep extends StatelessWidget {
                 ),
               ],
             ),
-
           ],
         ));
   }
