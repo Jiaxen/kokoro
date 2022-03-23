@@ -1,11 +1,11 @@
 class FirestorePath {
-  static String group(String groupId) => 'group/$groupId';
-  static String groups() => 'group';
+  static String room(String roomId) => 'room/$roomId';
+  static String rooms() => 'room';
   static String user(String uid) => 'users/$uid';
-  static String meeting(String groupId, String meetingId) =>
-      'group/$groupId/meetings/$meetingId';
-  static String meetings(String groupId) =>
-      'group/$groupId/meetings';
-  static String notes(String groupId) => 'group/$groupId/notes';
-  static String note(String groupId, String noteId) => 'group/$groupId/notes/$noteId';
+  static String meeting(String roomId, String meetingId) =>
+      'room/$roomId/meetings/$meetingId';
+  static String meetings(String roomId) =>
+      'room/$roomId/meetings';
+  static String notes(String roomId) => 'room/$roomId/notes';
+  static String note(String roomId, String noteId) => 'room/$roomId/notes/$noteId';
 }

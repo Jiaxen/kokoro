@@ -9,7 +9,7 @@ class Note extends ChangeNotifier {
   NoteState noteState;
   NoteType noteType;
   String? meetingId;
-  String groupId;
+  String roomId;
   String sentBy;
   DateTime createdTime;
   DateTime lastModifiedTime;
@@ -20,7 +20,7 @@ class Note extends ChangeNotifier {
     required this.noteState,
     required this.noteType,
     this.meetingId,
-    required this.groupId,
+    required this.roomId,
     required this.sentBy,
     required this.createdTime,
     required this.lastModifiedTime,
@@ -32,7 +32,7 @@ class Note extends ChangeNotifier {
     'noteState': enumToString(noteState),
     'noteType': enumToString(noteType),
     'meetingId': meetingId,
-    'groupId': groupId,
+    'roomId': roomId,
     'sentBy': sentBy,
     'createdTime': Timestamp.fromDate(createdTime),
     'lastModifiedTime': Timestamp.fromDate(lastModifiedTime),
@@ -48,7 +48,7 @@ class Note extends ChangeNotifier {
       noteType: enumFromString(NoteType.values, data['noteType']) ?? NoteType.appreciation ,
       createdTime: (data['createdTime'] as Timestamp).toDate(),
       sentBy: data['sentBy'],
-      groupId: data['groupId'],
+      roomId: data['roomId'],
       meetingId: data['meetingId'],
       lastModifiedTime: (data['lastModifiedTime'] as Timestamp).toDate(),
     );

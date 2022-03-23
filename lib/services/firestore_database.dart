@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:kokoro/app/models/group.dart';
+import 'package:kokoro/app/models/room.dart';
 import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/app/models/user.dart';
 import 'package:kokoro/services/firestore_path.dart';
@@ -29,11 +29,11 @@ class FirestoreDatabase {
         merge: true,
       );
 
-  Stream<List<Group>> invitedGroupStream(AppUser appUser){
-        //  Look for groups to which a user has been invited
+  Stream<List<Room>> invitedRoomStream(AppUser appUser){
+        //  Look for rooms to which a user has been invited
       return _service.collectionStream(
-          path: FirestorePath.groups(),
-          builder: (data, documentId) => Group.fromMap(data, documentId),
+          path: FirestorePath.rooms(),
+          builder: (data, documentId) => Room.fromMap(data, documentId),
           queryBuilder: (query) => query.where('invitedMembers',
               arrayContains: appUser.email!.toLowerCase())
       );
@@ -47,40 +47,40 @@ class FirestoreDatabase {
     );
   }
 
-  Stream<Group> groupStream({required String groupId}) =>
-      // Stream group information
+  Stream<Room> roomStream({required String roomId}) =>
+      // Stream room information
       _service.documentStream(
-        path: FirestorePath.group(groupId),
-        builder: (data, documentId) => Group.fromMap(data, documentId),
+        path: FirestorePath.room(roomId),
+        builder: (data, documentId) => Room.fromMap(data, documentId),
       );
 
-  Future<void> setGroup(Group group) {
-    // Update group in firestore
+  Future<void> setRoom(Room room) {
+    // Update room in firestore
     return _service.updateData(
-      documentPath: FirestorePath.group(group.groupId!),
-      data: group.toMap(),
+      documentPath: FirestorePath.room(room.roomId!),
+      data: room.toMap(),
     );
   }
 
-  Future<DocumentReference> addGroup(Group group) {
-    // Create new group in firestore
+  Future<DocumentReference> addRoom(Room room) {
+    // Create new room in firestore
     return _service.addData(
-      collectionPath: FirestorePath.groups(),
-      data: group.toMap(),
+      collectionPath: FirestorePath.rooms(),
+      data: room.toMap(),
     );
   }
 
-  Stream<Note> noteStream({required String noteId, required String groupId}) =>
+  Stream<Note> noteStream({required String noteId, required String roomId}) =>
       // Stream info about a particular note
       _service.documentStream(
-        path: FirestorePath.note(groupId, noteId),
+        path: FirestorePath.note(roomId, noteId),
         builder: (data, documentId) => Note.fromMap(data, documentId),
       );
 
-  Stream<List<Note>> notesStream({required String groupId}) =>
-      // Stream all notes of a given group
+  Stream<List<Note>> notesStream({required String roomId}) =>
+      // Stream all notes of a given room
       _service.collectionStream(
-        path: FirestorePath.notes(groupId),
+        path: FirestorePath.notes(roomId),
         builder: (data, documentId) => Note.fromMap(data, documentId),
       );
 
@@ -89,18 +89,18 @@ class FirestoreDatabase {
     if (note.id != null) {
       // Update note in Firebase
       return _service.updateData(
-        documentPath: FirestorePath.note(note.groupId, note.id!),
+        documentPath: FirestorePath.note(note.roomId, note.id!),
         data: note.toMap(),
       );
     } else {
       // Create note in Firebase if note.id is null
       return _service.addData(
-        collectionPath: FirestorePath.notes(note.groupId),
+        collectionPath: FirestorePath.notes(note.roomId),
         data: note.toMap(),
       );
     }
   }
 
   Future<void> deleteNote(Note note) =>
-      _service.deleteData(path: FirestorePath.note(note.groupId, note.id!));
+      _service.deleteData(path: FirestorePath.note(note.roomId, note.id!));
 }

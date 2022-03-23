@@ -29,9 +29,9 @@ class NextNotesTabBar extends StatelessWidget {
 }
 
 final notesStreamProvider =
-    StreamProvider.autoDispose.family<List<Note>, String>((ref, groupId) {
+    StreamProvider.autoDispose.family<List<Note>, String>((ref, roomId) {
   final database = ref.watch(databaseProvider)!;
-  return database.notesStream(groupId: groupId);
+  return database.notesStream(roomId: roomId);
 });
 
 class NextNotesTabs extends ConsumerWidget {
@@ -46,10 +46,10 @@ class NextNotesTabs extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider).value!;
-    if (user.currentGroup == null) {
+    if (user.currentRoom == null) {
       return LoadingNotes();
     } else {
-      final notes = ref.watch(notesStreamProvider(user.currentGroup!));
+      final notes = ref.watch(notesStreamProvider(user.currentRoom!));
       return notes.when(
         data: (notes) => ShowNotes(tabController: _tabController, notes: notes),
         loading: () => LoadingNotes(),

@@ -82,7 +82,7 @@ class _FindPartnerScreenState extends ConsumerState<FindPartnerScreen> {
 
   Column addPartnerInterface() {
     final myController = TextEditingController();
-    final group = ref.watch(groupProvider).value!;
+    final room = ref.watch(roomProvider).value!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -126,12 +126,12 @@ class _FindPartnerScreenState extends ConsumerState<FindPartnerScreen> {
             style: roundButtonStyle(kPrimaryTitleColour, kWarningBackgroundColorLight),
             onPressed: () {
               if (myController.text != "") {
-                group.invitedMembers != null
-                    ? group.invitedMembers!.add(myController.text.toLowerCase())
-                    : group.invitedMembers = [myController.text.toLowerCase()];
+                room.invitedMembers != null
+                    ? room.invitedMembers!.add(myController.text.toLowerCase())
+                    : room.invitedMembers = [myController.text.toLowerCase()];
                 // TODO: Email the user
                 final database = ref.watch(databaseProvider)!;
-                database.setGroup(group);
+                database.setRoom(room);
                 Navigator.of(context).popUntil((route) => route.isFirst);
               }
             },

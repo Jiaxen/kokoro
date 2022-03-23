@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kokoro/app/models/group.dart';
+import 'package:kokoro/app/models/room.dart';
 import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
 import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/app/screens/drawer.dart';
-import 'package:kokoro/app/widgets/group_management_card.dart';
+import 'package:kokoro/app/widgets/room_management_card.dart';
 import 'package:kokoro/app/widgets/next_notes_panel.dart';
 import 'package:flutter/services.dart';
 import 'package:kokoro/app/widgets/user_image.dart';
@@ -45,14 +45,14 @@ class _NotesScreenState extends ConsumerState<NotesScreen>
     AppUser appUser = ref
         .watch(userProvider)
         .value!;
-    Group group = ref
-        .watch(groupProvider)
+    Room room = ref
+        .watch(roomProvider)
         .value!;
     return ProgressHUD(
       child: Builder(
         builder: (context) {
           return NotesDisplay(
-            tabController: _tabController, auth: _auth, appUser: appUser, group: group);
+            tabController: _tabController, auth: _auth, appUser: appUser, room: room);
         },
       ),
     );
@@ -65,7 +65,7 @@ class NotesDisplay extends StatelessWidget {
     required TabController tabController,
     required FirebaseAuth auth,
     required this.appUser,
-    required this.group,
+    required this.room,
   })
       : _tabController = tabController,
         _auth = auth,
@@ -74,7 +74,7 @@ class NotesDisplay extends StatelessWidget {
   final TabController _tabController;
   final FirebaseAuth _auth;
   final AppUser appUser;
-  final Group group;
+  final Room room;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ class NotesDisplay extends StatelessWidget {
                           noteState: NoteState.current,
                           noteType:
                           NoteType.values[_tabController.index],
-                          groupId: appUser.currentGroup ?? '',
+                          roomId: appUser.currentRoom ?? '',
                           sentBy: appUser.uid,
                           createdTime: DateTime.now(),
                           lastModifiedTime: DateTime.now(),
@@ -128,7 +128,7 @@ class NotesDisplay extends StatelessWidget {
                         ),
                         SizedBox(height: 3),
                         Text(
-                          group.groupName ?? 'Kokoro',
+                          room.roomName ?? 'Kokoro',
                           style: mainTitleStyle(),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -148,7 +148,7 @@ class NotesDisplay extends StatelessWidget {
                   centerTitle: false,
                   backgroundColor: kPrimaryAppColour,
                 ),
-                GroupManagementCard(),
+                RoomManagementCard(),
               ];
             },
             body: Column(

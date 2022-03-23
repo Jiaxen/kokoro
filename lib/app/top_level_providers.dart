@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kokoro/app/models/user.dart';
-import 'package:kokoro/app/models/group.dart';
+import 'package:kokoro/app/models/room.dart';
 import 'package:kokoro/services/firestore_database.dart';
 import 'package:logger/logger.dart';
 
@@ -24,27 +24,27 @@ final userProvider = StreamProvider<AppUser>((ref) {
   return database.appUserStream();
 });
 
-final invitedGroupsProvider = StreamProvider<List<Group>>((ref) {
+final invitedRoomsProvider = StreamProvider<List<Room>>((ref) {
   final database = ref.watch(databaseProvider)!;
   final userAsyncValue = ref.watch(userProvider);
   return userAsyncValue.when(
-    data: (user) => database.invitedGroupStream(user),
+    data: (user) => database.invitedRoomStream(user),
     loading: () => Stream.value([]),
     error: (_, __) => Stream.value([]),
   );
 },
 );
 
-final groupProvider = StreamProvider<Group>(
+final roomProvider = StreamProvider<Room>(
   (ref) {
     final database = ref.watch(databaseProvider)!;
     final userAsyncValue = ref.watch(userProvider);
     return userAsyncValue.when(
-      data: (user) => user.currentGroup == null
-          ? Stream.value(Group.noGroup)
-          : database.groupStream(groupId: user.currentGroup!),
-      loading: () => Stream.value(Group.initial),
-      error: (_, __) => Stream.value(Group.initial),
+      data: (user) => user.currentRoom == null
+          ? Stream.value(Room.noRoom)
+          : database.roomStream(roomId: user.currentRoom!),
+      loading: () => Stream.value(Room.initial),
+      error: (_, __) => Stream.value(Room.initial),
     );
   },
 );

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kokoro/app/models/group.dart';
+import 'package:kokoro/app/models/room.dart';
 import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
 
 class InvitedStep extends ConsumerStatefulWidget {
-  final List<Group> invitedGroups;
+  final List<Room> invitedRooms;
 
   const InvitedStep({
     Key? key,
-    required this.invitedGroups,
+    required this.invitedRooms,
   }) : super(key: key);
 
   @override
@@ -113,8 +113,8 @@ class _InvitedStepState extends ConsumerState<InvitedStep>
           Opacity(
             opacity: _animation3.value,
             child: Column(
-              children: widget.invitedGroups
-                  .map((group) => Container(
+              children: widget.invitedRooms
+                  .map((room) => Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: kPrimaryBackgroundColour,
@@ -127,7 +127,7 @@ class _InvitedStepState extends ConsumerState<InvitedStep>
                             Container(
                               alignment: Alignment.topLeft,
                               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                              child: Text(group.groupName ?? 'Unnamed',
+                              child: Text(room.roomName ?? 'Unnamed',
                                   style: TextStyle(
                                       fontSize: 24,
                                       color: kPrimaryTextColour)),
@@ -143,8 +143,8 @@ class _InvitedStepState extends ConsumerState<InvitedStep>
                                     onPressed: () {
                                       final user = ref.watch(userProvider).value!;
                                       final database = ref.watch(databaseProvider)!;
-                                      group.invitedMembers!.remove(user.email);
-                                      database.setGroup(group);
+                                      room.invitedMembers!.remove(user.email);
+                                      database.setRoom(room);
                                     },
                                   ),
                                   SizedBox(width: 10),
@@ -155,10 +155,10 @@ class _InvitedStepState extends ConsumerState<InvitedStep>
                                     onPressed: () {
                                       final user = ref.watch(userProvider).value!;
                                       final database = ref.watch(databaseProvider)!;
-                                      user.currentGroup = group.groupId;
+                                      user.currentRoom = room.roomId;
                                       database.setUser(user);
-                                      group.invitedMembers!.remove(user.email);
-                                      database.setGroup(group);
+                                      room.invitedMembers!.remove(user.email);
+                                      database.setRoom(room);
                                     },
                                   ),
                                 ]),

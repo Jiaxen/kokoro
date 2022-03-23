@@ -53,12 +53,12 @@ class MyApp extends ConsumerWidget {
     final userAsyncValue = ref.watch(userProvider);
     return userAsyncValue.when(
       data: (user) {
-        if (user.currentGroup == null) {
+        if (user.currentRoom == null) {
           return OnboardingPage();
         } else {
-          final groupAsyncValue = ref.watch(groupProvider);
-          return groupAsyncValue.when(
-            data: (group) => NotesScreen(),
+          final roomAsyncValue = ref.watch(roomProvider);
+          return roomAsyncValue.when(
+            data: (room) => NotesScreen(),
             loading: () => EmptyContent(),
             error: (_,__) => EmptyContent(title: 'Oops', message: 'Something went wrong.',)
           );

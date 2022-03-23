@@ -1,56 +1,56 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
-class Group extends ChangeNotifier{
-  String? groupId;
-  String? groupName;
+class Room extends ChangeNotifier{
+  String? roomId;
+  String? roomName;
   List<String> members;
   List<String>? invitedMembers;
   DateTime? createdTime;
 
-  /// Instantiates a [Group].
-  Group({
-    this.groupId,
-    this.groupName,
+  /// Instantiates a [Room].
+  Room({
+    this.roomId,
+    this.roomName,
     required this.members,
     this.invitedMembers,
     this.createdTime,
   });
 
   // Initial value when loading or when error
-  static Group initial = Group(
-    groupId: 'initial',
+  static Room initial = Room(
+    roomId: 'initial',
     members: []
   );
 
   bool isInitial(){
-    return groupId == 'initial';
+    return roomId == 'initial';
   }
 
-  // If user is just created, they have no group
-  static Group noGroup = Group(
-    groupId: null,
+  // If user is just created, they have no room
+  static Room noRoom = Room(
+    roomId: null,
     members: []
   );
 
-  bool isNoGroup(){
-    return groupId == null;
+  bool isNoRoom(){
+    return roomId == null;
   }
 
-  /// Serializes this [Group] into a JSON object.
+  /// Serializes this [Room] into a JSON object.
   Map<String, dynamic> toMap() => {
-    'groupName': groupName,
+    'roomName': roomName,
     'members': members,
     'invitedMembers': invitedMembers,
     'createdTime': createdTime,
   };
 
-  factory Group.fromMap(Map<String, dynamic>? data, String documentId) {
+  factory Room.fromMap(Map<String, dynamic>? data, String documentId) {
     if (data == null) {
-      throw StateError('missing data for GroupId: $documentId');
+      throw StateError('missing data for RoomId: $documentId');
     }
-    return Group(groupId: documentId,
-      groupName: data.containsKey('groupName') ? data['groupName'] : '',
+    return Room(roomId: documentId,
+      roomName: data.containsKey('roomName') ? data['roomName'] : '',
       members: List<String>.from(data['members']),
       invitedMembers: data.containsKey('invitedMembers')
           ? List<String>.from(data['invitedMembers'])

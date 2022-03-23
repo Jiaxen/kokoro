@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kokoro/app/models/group.dart';
+import 'package:kokoro/app/models/room.dart';
 import 'package:kokoro/app/models/user.dart';
 import 'package:kokoro/app/screens/empty_content.dart';
 import 'package:kokoro/app/screens/onboarding/step_1_welcome.dart';
 import 'package:kokoro/app/screens/onboarding/step_2_partner.dart';
 import 'package:kokoro/app/screens/onboarding/step_2b_invited.dart';
-import 'package:kokoro/app/screens/onboarding/step_3_group.dart';
+import 'package:kokoro/app/screens/onboarding/step_3_room.dart';
 import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
 
@@ -22,9 +22,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final invitedGroupsAsyncValue = ref.watch(invitedGroupsProvider);
-    return invitedGroupsAsyncValue.when(
-      data: (invitedGroups) => OnboardingStepper(invitedGroups: invitedGroups),
+    final invitedRoomsAsyncValue = ref.watch(invitedRoomsProvider);
+    return invitedRoomsAsyncValue.when(
+      data: (invitedRooms) => OnboardingStepper(invitedRooms: invitedRooms),
       error: (_, __) => EmptyContent(
         title: 'Oops',
         message: 'Something went wrong',
@@ -35,12 +35,12 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 }
 
 class OnboardingStepper extends ConsumerStatefulWidget {
-  final List<Group> invitedGroups;
+  final List<Room> invitedRooms;
   int _index = 0;
   final partnerEmailController = TextEditingController();
-  final groupNameController = TextEditingController();
+  final roomNameController = TextEditingController();
 
-  OnboardingStepper({Key? key, required this.invitedGroups})
+  OnboardingStepper({Key? key, required this.invitedRooms})
       : super(key: key);
 
   @override
@@ -51,7 +51,7 @@ class _OnboardingStepperState extends ConsumerState<OnboardingStepper> {
   @override
   Widget build(BuildContext context) {
     AppUser user = ref.watch(userProvider).value!;
-    if (widget.invitedGroups.isEmpty) {
+    if (widget.invitedRooms.isEmpty) {
       return Scaffold(
         backgroundColor: kPrimaryAppColour,
         body: Theme(
@@ -98,20 +98,20 @@ class _OnboardingStepperState extends ConsumerState<OnboardingStepper> {
               Step(
                 isActive: widget._index >= 2,
                 title: const Text('Room'),
-                content: AddGroupStep(
-                  groupController: widget.groupNameController,
+                content: AddRoomStep(
+                  roomController: widget.roomNameController,
                   nextStep: () async {
                     final database = ref.watch(databaseProvider)!;
-                    Group newGroup = Group(
-                        groupName: widget.groupNameController.text,
+                    Room newRoom = Room(
+                        roomName: widget.roomNameController.text,
                         members: [user.uid],
                         invitedMembers: [
                           widget.partnerEmailController.text.toLowerCase()
                         ],
                         createdTime: DateTime.now());
-                    DocumentReference newGroupDocument =
-                        await database.addGroup(newGroup);
-                    user.currentGroup = newGroupDocument.id;
+                    DocumentReference newRoomDocument =
+                        await database.addRoom(newRoom);
+                    user.currentRoom = newRoomDocument.id;
                     database.setUser(user);
                   },
                   previousStep: () {
@@ -156,7 +156,7 @@ class _OnboardingStepperState extends ConsumerState<OnboardingStepper> {
                 isActive: widget._index >= 1,
                 title: const Text('Invitation'),
                 content: InvitedStep(
-                  invitedGroups: widget.invitedGroups,
+                  invitedRooms: widget.invitedRooms,
                 ),
               ),
             ],

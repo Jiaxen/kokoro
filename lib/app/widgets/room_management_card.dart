@@ -5,21 +5,21 @@ import 'package:kokoro/constants.dart';
 import 'package:kokoro/routing/app_router.dart';
 
 
-class GroupManagementCard extends ConsumerWidget {
-  const GroupManagementCard({
+class RoomManagementCard extends ConsumerWidget {
+  const RoomManagementCard({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupAsyncValue = ref.watch(groupProvider);
-    return groupAsyncValue.when(
-      data: (group) => SliverToBoxAdapter(
+    final roomAsyncValue = ref.watch(roomProvider);
+    return roomAsyncValue.when(
+      data: (room) => SliverToBoxAdapter(
         child: Container(
           color: kPrimaryAppColour,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: group.invitedMembers == null ? NewPartnerWidget() : NextMeetingWidget(),
+            child: room.invitedMembers == null ? NewPartnerWidget() : NextMeetingWidget(),
           ),
         ),
       ),
@@ -37,7 +37,7 @@ class NewPartnerWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider).value!;
-    final group = ref.watch(groupProvider).value!;
+    final room = ref.watch(roomProvider).value!;
     return InkWell(
       onTap: () => Navigator.of(context, rootNavigator: true).pushNamed(AppRoutes.findPartnerScreen),
       child: Card(
@@ -49,9 +49,9 @@ class NewPartnerWidget extends ConsumerWidget {
             size: 30,
             color: Colors.amber[100],
           ),
-          title: Text(user.currentGroup ?? 'Nope (AU)',
+          title: Text(user.currentRoom ?? 'Nope (AU)',
               style: TextStyle(color: kPrimaryTitleColour)),
-          subtitle: Text(group.groupId ?? 'Nope (GP)'),
+          subtitle: Text(room.roomId ?? 'Nope (GP)'),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),

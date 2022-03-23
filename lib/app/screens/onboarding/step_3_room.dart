@@ -1,25 +1,25 @@
 import 'package:kokoro/constants.dart';
 import 'package:flutter/material.dart';
 
-class AddGroupStep extends StatefulWidget {
+class AddRoomStep extends StatefulWidget {
   final Function nextStep;
   final Function previousStep;
-  final TextEditingController groupController;
+  final TextEditingController roomController;
 
-  const AddGroupStep({
+  const AddRoomStep({
     Key? key,
     required this.nextStep,
     required this.previousStep,
-    required this.groupController,
+    required this.roomController,
   }) : super(key: key);
 
   @override
-  State<AddGroupStep> createState() => _AddGroupStepState();
+  State<AddRoomStep> createState() => _AddRoomStepState();
 }
 
-class _AddGroupStepState extends State<AddGroupStep> with TickerProviderStateMixin {
+class _AddRoomStepState extends State<AddRoomStep> with TickerProviderStateMixin {
   late FocusNode myFocusNode;
-  String? groupErrorMessage;
+  String? roomErrorMessage;
 
   @override
   void initState() {
@@ -121,7 +121,7 @@ class _AddGroupStepState extends State<AddGroupStep> with TickerProviderStateMix
                   children: [
                     TextField(
                         focusNode: myFocusNode,
-                        controller: widget.groupController,
+                        controller: widget.roomController,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: kTextBackgroundColour,
@@ -140,9 +140,9 @@ class _AddGroupStepState extends State<AddGroupStep> with TickerProviderStateMix
                         textCapitalization: TextCapitalization.sentences,
                         minLines: 1),
                     SizedBox(height: 12),
-                    groupErrorMessage != null
+                    roomErrorMessage != null
                         ? Text(
-                      groupErrorMessage!,
+                      roomErrorMessage!,
                       style: TextStyle(
                         fontSize: 14,
                         color: kErrorTextColorLight,
@@ -170,12 +170,12 @@ class _AddGroupStepState extends State<AddGroupStep> with TickerProviderStateMix
                                   kPrimaryTitleColour, kWarningBackgroundColorLight),
                               child: const Text('Finish 👉'),
                               onPressed: () {
-                                if (widget.groupController.text.length > 0){
+                                if (widget.roomController.text.length > 0){
                                   FocusManager.instance.primaryFocus?.unfocus();
                                   widget.nextStep();
                                 } else {
                                   setState(() {
-                                    groupErrorMessage = 'Please enter a room name.\n(Don\'t worry, you can change it later)';
+                                    roomErrorMessage = 'Please enter a room name.\n(Don\'t worry, you can change it later)';
                                   });
                                 }
                               }),

@@ -6,21 +6,21 @@ class AppUser {
   String? email;
   String? displayName;
   String? photoURL;
-  String? currentGroup;
+  String? currentRoom;
 
   AppUser(
       {required this.uid,
       this.email,
       this.displayName,
       this.photoURL,
-      this.currentGroup});
+      this.currentRoom});
 
   static AppUser initial = AppUser(
       uid: '',
       email: null,
       displayName: null,
       photoURL: null,
-      currentGroup: null);
+      currentRoom: null);
 
   bool isInitial(){
     return uid == '' ? true : false;
@@ -32,7 +32,7 @@ class AppUser {
       'email': email,
       'displayName': displayName,
       'photoURL': photoURL,
-      'currentGroup': currentGroup
+      'currentRoom': currentRoom
     };
   }
 
@@ -55,7 +55,7 @@ class AppUser {
           email: data['email'],
           photoURL: data['photoURL'],
           displayName: data['displayName'],
-          currentGroup: data['currentGroup'],
+          currentRoom: data['currentRoom'],
     );
   }
 

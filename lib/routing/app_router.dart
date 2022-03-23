@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/app/screens/edit_note_screen.dart';
-import 'package:kokoro/app/screens/group_manage_screen.dart';
+import 'package:kokoro/app/screens/room_manage_screen.dart';
 import 'package:kokoro/app/screens/notes_screen.dart';
 
 class AppRoutes {
