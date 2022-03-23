@@ -36,6 +36,16 @@ class AppUser {
     };
   }
 
+  Map<String, dynamic> firebaseDetailsToMap() {
+    // This is the same as toMap, but only for merging new firebase details
+    return {
+      'uid': uid,
+      'email': email,
+      'displayName': displayName,
+      'photoURL': photoURL,
+    };
+  }
+
 
   factory AppUser.fromMap(Map<String, dynamic>? data, String uid) {
     if (data == null) {

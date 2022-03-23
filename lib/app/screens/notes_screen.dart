@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
 import 'package:kokoro/app/models/note.dart';
 import 'package:kokoro/app/screens/drawer.dart';
@@ -14,9 +15,8 @@ import 'package:kokoro/app/screens/edit_note_screen.dart';
 
 class NotesScreen extends ConsumerStatefulWidget {
   static const String id = 'notes_screen';
-  final AppUser appUser;
 
-  const NotesScreen(this.appUser, {Key? key}) : super(key: key);
+  const NotesScreen({Key? key}) : super(key: key);
 
   @override
   _NotesScreenState createState() => _NotesScreenState();
@@ -41,11 +41,11 @@ class _NotesScreenState extends ConsumerState<NotesScreen>
       systemNavigationBarColor:
           kPrimaryBackgroundColour, // navigation bar color
     ));
-    // Get firebase user for the uid
+    AppUser appUser = ref.watch(userProvider).value!;  // Get firebase user for the uid
     return ProgressHUD(
       child: Builder(
         builder: (context) {
-          return NotesDisplay(tabController: _tabController, auth: _auth, appUser: widget.appUser,);
+          return NotesDisplay(tabController: _tabController, auth: _auth, appUser: appUser,);
               },
             ),
           );

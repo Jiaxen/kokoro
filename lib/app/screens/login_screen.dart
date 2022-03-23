@@ -126,6 +126,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       displayName: firebaseUser.displayName,
       photoURL: firebaseUser.photoURL,
     );
-    database.setUser(appUser);
+    database.updateUserFirebaseDetails(appUser);
   }
 }

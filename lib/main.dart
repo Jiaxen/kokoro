@@ -52,11 +52,20 @@ class MyApp extends ConsumerWidget {
   Widget OnboardingCheck(WidgetRef ref) {
     final userAsyncValue = ref.watch(userProvider);
     return userAsyncValue.when(
-      data: (user) => user.currentGroup == null
-          ? OnboardingPage(user)
-          : NotesScreen(user),
+      data: (user) {
+        if (user.currentGroup == null) {
+          return OnboardingPage();
+        } else {
+          final groupAsyncValue = ref.watch(groupProvider);
+          return groupAsyncValue.when(
+            data: (group) => NotesScreen(),
+            loading: () => EmptyContent(),
+            error: (_,__) => EmptyContent(title: 'Oops', message: 'Something went wrong.',)
+          );
+        }
+      },
       loading: () => EmptyContent(),
-      error: (_, __) => EmptyContent(),
+      error: (_, __) => EmptyContent(title: 'Oops', message: 'Something went wrong.',),
     );
   }
 }

@@ -15,6 +15,13 @@ class FirestoreDatabase {
 
   final _service = FirestoreService.instance;
 
+  Future<void> updateUserFirebaseDetails(AppUser appUser) =>
+      _service.updateData(
+        documentPath: FirestorePath.user(uid),
+        data: appUser.firebaseDetailsToMap(),
+        merge: true,
+      );
+
   Future<void> setUser(AppUser appUser) =>
       _service.updateData(
         documentPath: FirestorePath.user(uid),

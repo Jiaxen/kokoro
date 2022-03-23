@@ -10,9 +10,7 @@ import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
 
 class OnboardingPage extends ConsumerStatefulWidget {
-  final AppUser appUser;
-
-  const OnboardingPage(this.appUser, {Key? key}) : super(key: key);
+  const OnboardingPage({Key? key}) : super(key: key);
 
   @override
   ConsumerState<OnboardingPage> createState() => _OnboardingPageState();
@@ -25,6 +23,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppUser appUser = ref.watch(userProvider).value!;
     return Scaffold(
       backgroundColor: kPrimaryAppColour,
       body: Theme(
@@ -75,7 +74,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 groupController: groupNameController,
                 nextStep: () async {
                   final database = ref.watch(databaseProvider)!;
-                  AppUser user = widget.appUser;
+                  AppUser user = appUser;
 
                   Group newGroup = Group(
                       groupName: groupNameController.text,
