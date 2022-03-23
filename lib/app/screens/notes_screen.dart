@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kokoro/app/models/group.dart';
 import 'package:kokoro/app/top_level_providers.dart';
 import 'package:kokoro/constants.dart';
 import 'package:kokoro/app/models/note.dart';
@@ -39,29 +40,41 @@ class _NotesScreenState extends ConsumerState<NotesScreen>
     // Change Android system navigation bar colour to match app
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor:
-          kPrimaryBackgroundColour, // navigation bar color
+      kPrimaryBackgroundColour, // navigation bar color
     ));
-    AppUser appUser = ref.watch(userProvider).value!;  // Get firebase user for the uid
+    AppUser appUser = ref
+        .watch(userProvider)
+        .value!;
+    Group group = ref
+        .watch(groupProvider)
+        .value!;
     return ProgressHUD(
       child: Builder(
         builder: (context) {
-          return NotesDisplay(tabController: _tabController, auth: _auth, appUser: appUser,);
-              },
-            ),
-          );
-        }
+          return NotesDisplay(
+            tabController: _tabController, auth: _auth, appUser: appUser, group: group);
+        },
+      ),
+    );
   }
+}
 
 class NotesDisplay extends StatelessWidget {
   const NotesDisplay({
     Key? key,
     required TabController tabController,
-    required FirebaseAuth auth, required this.appUser,
-  }) : _tabController = tabController, _auth = auth, super(key: key);
+    required FirebaseAuth auth,
+    required this.appUser,
+    required this.group,
+  })
+      : _tabController = tabController,
+        _auth = auth,
+        super(key: key);
 
   final TabController _tabController;
   final FirebaseAuth _auth;
   final AppUser appUser;
+  final Group group;
 
   @override
   Widget build(BuildContext context) {
@@ -72,18 +85,19 @@ class NotesDisplay extends StatelessWidget {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (context) => EditNoteScreen(
-                    note: Note(
-                      id: null,
-                      content: '',
-                      noteState: NoteState.current,
-                      noteType:
-                      NoteType.values[_tabController.index],
-                      groupId: appUser.currentGroup ?? '',
-                      sentBy: appUser.uid,
-                      createdTime: DateTime.now(),
-                      lastModifiedTime: DateTime.now(),
-                    )),
+                builder: (context) =>
+                    EditNoteScreen(
+                        note: Note(
+                          id: null,
+                          content: '',
+                          noteState: NoteState.current,
+                          noteType:
+                          NoteType.values[_tabController.index],
+                          groupId: appUser.currentGroup ?? '',
+                          sentBy: appUser.uid,
+                          createdTime: DateTime.now(),
+                          lastModifiedTime: DateTime.now(),
+                        )),
               );
             }),
         backgroundColor: kPrimaryAppColour,
@@ -101,26 +115,32 @@ class NotesDisplay extends StatelessWidget {
                   floating: true,
                   collapsedHeight: 80.0,
                   expandedHeight: 80.0,
-                  flexibleSpace: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 15),
-                      Text(
-                        'Kokoro',
-                        style: mainTitleStyle(),
-                      ),
-                      Text(
-                        'Relationship Meetings',
-                        style: TextStyle(fontSize: 14, color: kPrimaryTitleColour),
-
-                      ),
-                      SizedBox(height: 5),
-                    ],
+                  flexibleSpace: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 15),
+                        Text(
+                          group.groupName ?? 'Kokoro',
+                          style: mainTitleStyle(),
+                        ),
+                        Text(
+                          'Kokoro Relationship Meetings',
+                          style: TextStyle(
+                              fontSize: 14, color: kPrimaryTitleColour),
+                        ),
+                        SizedBox(height: 5),
+                      ],
+                    ),
                   ),
                   actions: [
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: InkWell(child: buildUserAvatar(appUser.photoURL), onTap: () {Scaffold.of(context).openDrawer();},),
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 20, bottom: 0),
+                      child: InkWell(
+                        child: buildUserAvatar(appUser.photoURL), onTap: () {
+                        Scaffold.of(context).openDrawer();
+                      },),
                     )
                   ],
                   centerTitle: false,

@@ -19,6 +19,7 @@ class AddGroupStep extends StatefulWidget {
 
 class _AddGroupStepState extends State<AddGroupStep> with TickerProviderStateMixin {
   late FocusNode myFocusNode;
+  String? groupErrorMessage;
 
   @override
   void initState() {
@@ -139,6 +140,15 @@ class _AddGroupStepState extends State<AddGroupStep> with TickerProviderStateMix
                         textCapitalization: TextCapitalization.sentences,
                         minLines: 1),
                     SizedBox(height: 12),
+                    groupErrorMessage != null
+                        ? Text(
+                      groupErrorMessage!,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: kErrorTextColorLight,
+                      ),
+                    )
+                        : SizedBox(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -160,8 +170,14 @@ class _AddGroupStepState extends State<AddGroupStep> with TickerProviderStateMix
                                   kPrimaryTitleColour, kWarningBackgroundColorLight),
                               child: const Text('Finish 👉'),
                               onPressed: () {
-                                FocusManager.instance.primaryFocus?.unfocus();
-                                widget.nextStep();
+                                if (widget.groupController.text.length > 0){
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                  widget.nextStep();
+                                } else {
+                                  setState(() {
+                                    groupErrorMessage = 'Please enter a room name.\n(Don\'t worry, you can change it later)';
+                                  });
+                                }
                               }),
                         ),
                       ],
