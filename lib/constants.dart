@@ -3,12 +3,12 @@ import 'dart:ui';
 
 
 // Colours
-Color kPrimaryAppColour = const Color(0xFF615896);
-  Color kSecondaryAppColour = const Color(0xFF827BAC);
+Color kPrimaryAppColour = const Color(0xFF7266B1);
+Color kSecondaryAppColour = const Color(0xFF837BB4);
 Color kErrorTextColorLight = const Color(0xFFBF4545);
 Color kWarningBackgroundColorLight = const Color(0xFFFA7A7A);
 Color kPrimaryTitleColour = Colors.white;
-Color kPrimaryTextColour = const Color(0xFF262626);
+Color kPrimaryTextColour = const Color(0xFF433C69);
 Color kPrimaryBackgroundColour = Colors.white;
 Color kSecondaryBackgroundColour = const Color(0xFFAAAAAA);
 Color kTextBackgroundColour = const Color(0xFFF3F3F3);
