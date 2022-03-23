@@ -113,24 +113,26 @@ class NotesDisplay extends StatelessWidget {
                   pinned: false,
                   snap: true,
                   floating: true,
-                  collapsedHeight: 80.0,
-                  expandedHeight: 80.0,
+                  collapsedHeight: 75.0,
+                  expandedHeight: 75.0,
                   flexibleSpace: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 15),
-                        Text(
-                          group.groupName ?? 'Kokoro',
-                          style: mainTitleStyle(),
-                        ),
                         Text(
                           'Kokoro Relationship Meetings',
                           style: TextStyle(
                               fontSize: 14, color: kPrimaryTitleColour),
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 3),
+                        Text(
+                          group.groupName ?? 'Kokoro',
+                          style: mainTitleStyle(),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        // SizedBox(height: 5),
                       ],
                     ),
                   ),

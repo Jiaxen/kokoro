@@ -13,7 +13,6 @@ final authStateChangesProvider = StreamProvider<User?>(
 
 final databaseProvider = Provider<FirestoreDatabase?>((ref) {
   final auth = ref.watch(authStateChangesProvider);
-
   if (auth.asData?.value?.uid != null) {
     return FirestoreDatabase(uid: auth.asData!.value!.uid);
   }
@@ -25,17 +24,30 @@ final userProvider = StreamProvider<AppUser>((ref) {
   return database.appUserStream();
 });
 
-final groupProvider = StreamProvider<Group>((ref) {
+final invitedGroupsProvider = StreamProvider<List<Group>>((ref) {
   final database = ref.watch(databaseProvider)!;
   final userAsyncValue = ref.watch(userProvider);
   return userAsyncValue.when(
-    data: (user) => user.currentGroup == null
-        ? Stream.value(Group.noGroup)
-        : database.groupStream(groupId: user.currentGroup!),
-    loading: () => Stream.value(Group.initial),
-    error: (_, __) => Stream.value(Group.initial),
+    data: (user) => database.invitedGroupStream(user),
+    loading: () => Stream.value([]),
+    error: (_, __) => Stream.value([]),
   );
-});
+},
+);
+
+final groupProvider = StreamProvider<Group>(
+  (ref) {
+    final database = ref.watch(databaseProvider)!;
+    final userAsyncValue = ref.watch(userProvider);
+    return userAsyncValue.when(
+      data: (user) => user.currentGroup == null
+          ? Stream.value(Group.noGroup)
+          : database.groupStream(groupId: user.currentGroup!),
+      loading: () => Stream.value(Group.initial),
+      error: (_, __) => Stream.value(Group.initial),
+    );
+  },
+);
 
 final loggerProvider = Provider<Logger>((ref) => Logger(
       printer: PrettyPrinter(

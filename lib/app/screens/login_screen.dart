@@ -122,7 +122,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final database = ref.watch(databaseProvider)!;
     AppUser appUser = AppUser(
       uid: firebaseUser.uid,
-      email: firebaseUser.email,
+      email: firebaseUser.email!.toLowerCase(),
       displayName: firebaseUser.displayName,
       photoURL: firebaseUser.photoURL,
     );

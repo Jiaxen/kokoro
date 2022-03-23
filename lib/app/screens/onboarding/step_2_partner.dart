@@ -9,7 +9,7 @@ class AddPartnerStep extends ConsumerStatefulWidget {
   final Function previousStep;
   final TextEditingController emailController;
 
-  AddPartnerStep({
+  const AddPartnerStep({
     Key? key,
     required this.nextStep,
     required this.previousStep,

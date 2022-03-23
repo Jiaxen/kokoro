@@ -20,8 +20,7 @@ class NextNotesTabBar extends StatelessWidget {
     return TabBar(
       padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
       indicator: roundedBoxDecoration(),
-      labelStyle:
-          const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+      labelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
       isScrollable: true,
       controller: _tabController,
       tabs: noteTypes.map((e) => Tab(text: e)).toList(),
@@ -186,10 +185,12 @@ class NoteTile extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-          color: kTextBackgroundColour,
-          borderRadius: BorderRadius.all(Radius.circular(25))),
+        color: kTextBackgroundColour,
+        borderRadius: BorderRadius.all(
+          Radius.circular(25),
+        ),
+      ),
       child: InkWell(
-        splashColor: Colors.blue.withAlpha(30),
         onTap: () {
           showDialog(
             context: context,
