@@ -133,6 +133,15 @@ class NextNotesTab extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25), topRight: Radius.circular(25))),
       child: Builder(builder: (BuildContext context) {
+        if (notes.isEmpty){
+          return Container(
+            child: Center(
+              child:
+                Text('Click + to add a new note!')
+            ),
+          );
+        }
+        else {
         return ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
             itemCount: notes.length,
@@ -147,7 +156,7 @@ class NextNotesTab extends StatelessWidget {
                   SizedBox(height: 10),
                 ],
               );
-            });
+            });}
       }),
     );
   }
