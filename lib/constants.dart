@@ -7,9 +7,9 @@ Color kPrimaryAppColour = const Color(0xFF7266B1);
 Color kSecondaryAppColour = const Color(0xFF837BB4);
 Color kErrorTextColorLight = const Color(0xFFBF4545);
 Color kWarningBackgroundColorLight = const Color(0xFFFA7A7A);
-Color kPrimaryTitleColour = Colors.white;
+Color kPrimaryTitleColour = const Color(0xFFFFFBFE);
 Color kPrimaryTextColour = const Color(0xFF433C69);
-Color kPrimaryBackgroundColour = Colors.white;
+Color kPrimaryBackgroundColour = const Color(0xFFFFFBFE);
 Color kSecondaryBackgroundColour = const Color(0xFFAAAAAA);
 Color kTextBackgroundColour = const Color(0xFFF3F3F3);
 

@@ -137,8 +137,8 @@ class _AddPartnerStepState extends ConsumerState<AddPartnerStep>
                         controller: widget.emailController,
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: kTextBackgroundColour,
-                          focusColor: kTextBackgroundColour,
+                          fillColor: kPrimaryBackgroundColour,
+                          focusColor: kPrimaryBackgroundColour,
                           focusedBorder: OutlineInputBorder(
                               borderSide:
                               BorderSide(color: kTextBackgroundColour, width: 0.0),

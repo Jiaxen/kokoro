@@ -152,13 +152,14 @@ class _InvitedStepState extends ConsumerState<InvitedStep>
                                     style: roundButtonStyle(kPrimaryTitleColour,
                                         kWarningBackgroundColorLight),
                                     child: Text('Accept'),
-                                    onPressed: () {
+                                    onPressed: () async {
                                       final user = ref.watch(userProvider).value!;
                                       final database = ref.watch(databaseProvider)!;
                                       user.currentRoom = room.roomId;
-                                      database.setUser(user);
                                       room.invitedMembers!.remove(user.email);
-                                      database.setRoom(room);
+                                      room.members.add(user.uid);
+                                      await database.setRoom(room);
+                                      database.setUser(user);
                                     },
                                   ),
                                 ]),
