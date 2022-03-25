@@ -12,6 +12,7 @@ This is work-in-progress relationship-meeting app.
 
 ## Architecture
 The app is built using Flutter with a Firebase backend
+
 <img src="images/flutterfire.svg" width="150">
 
 ## Screenshots
