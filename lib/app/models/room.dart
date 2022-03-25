@@ -49,6 +49,9 @@ class Room extends ChangeNotifier{
     if (data == null) {
       throw StateError('missing data for RoomId: $documentId');
     }
+    if (!data.keys.contains('members')){
+      throw StateError('missing required member fields for RoomId: $documentId');
+    }
     return Room(roomId: documentId,
       roomName: data.containsKey('roomName') ? data['roomName'] : '',
       members: List<String>.from(data['members']),
