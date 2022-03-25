@@ -1,16 +1,17 @@
-# kokoro
+# Kokoro Relationship Meetings
 
-Kokoro Relationship Meetings
+## About Kokoro
 
-## Getting Started
+This is work-in-progress relationship-meeting app.
+- Save notes about your relationship; separated into 'Appreciation', 'Chores', 'Plans', and 'Challenges'
+- Schedule and have meetings to go through your notes
+- Look through your relationship meeting history - a diary of your relationship
 
-This project is a starting point for a Flutter application.
+## Architecture
+The app is built using Flutter with a Firebase backend
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Login Screenshot](images/Screenshot_login.png?raw=true "App login")
+![Login Screenshot](images/Screenshot_notes.png?raw=true "App notes")
+![Login Screenshot](images/Screenshot_edit_note.png?raw=true "App edit notes")
