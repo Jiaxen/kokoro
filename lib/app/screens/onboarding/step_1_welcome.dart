@@ -113,7 +113,7 @@ class _WelcomeStepState extends State<WelcomeStep>
               opacity: _animation3.value,
               child: roundedTextBox(
                 Text(
-                  'We hope this app will help you\nand your partner to strengthen\n your relationship.',
+                  'We hope this app will help you\nand your partner strengthen\nyour relationship.',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
