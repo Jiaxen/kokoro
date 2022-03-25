@@ -12,6 +12,16 @@ The app is built using Flutter with a Firebase backend
 
 ## Screenshots
 
-<img src="images/Screenshot_login.png" width="200" border="3">
-<img src="images/Screenshot_notes.png" width="200" border="3">
-<img src="images/Screenshot_edit_note.png" width="200" border="3">
+<table><tr><td>
+    <img src="images/Screenshot_login.png" width="200" border="3">
+</td></tr></table>
+
+<table><tr><td>
+    <img src="images/Screenshot_edit_note.png" width="200" border="3">
+</td></tr></table>
+
+<table><tr><td>
+    <img src="images/Screenshot_notes.png" width="200" border="3">
+</td></tr></table>
+
+
