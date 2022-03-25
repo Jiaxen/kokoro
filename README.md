@@ -5,7 +5,7 @@
 This is work-in-progress relationship-meeting app.
 - Save notes about your relationship
 - Notes are separated into 'Appreciation', 'Chores', 'Plans', and 'Challenges'
-- Schedule and have relationship meetings where you through your notes
+- Schedule and have relationship meetings where you go through your notes and save them
 - Look through your relationship meeting history - a diary of your relationship
 
 ** It's like a sprint retrospective for your relationship! **
