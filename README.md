@@ -12,6 +12,6 @@ The app is built using Flutter with a Firebase backend
 
 ## Screenshots
 
-![Login Screenshot](images/Screenshot_login.png?raw=true "App login")
-![Login Screenshot](images/Screenshot_notes.png?raw=true "App notes")
-![Login Screenshot](images/Screenshot_edit_note.png?raw=true "App edit notes")
+<img src="images/Screenshot_login.png" width="200">
+<img src="images/Screenshot_notes.png" width="200">
+<img src="images/Screenshot_edit_note.png" width="200">
