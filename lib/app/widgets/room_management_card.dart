@@ -19,44 +19,12 @@ class RoomManagementCard extends ConsumerWidget {
           color: kPrimaryAppColour,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: room.invitedMembers == null ? NewPartnerWidget() : NextMeetingWidget(),
+            child: NextMeetingWidget(),
           ),
         ),
       ),
       loading: () => SliverToBoxAdapter(child: Container()),
       error: (_,__) => SliverToBoxAdapter(child: Container()),
-    );
-  }
-}
-
-class NewPartnerWidget extends ConsumerWidget {
-  const NewPartnerWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider).value!;
-    final room = ref.watch(roomProvider).value!;
-    return InkWell(
-      onTap: () => Navigator.of(context, rootNavigator: true).pushNamed(AppRoutes.findPartnerScreen),
-      child: Card(
-        margin: EdgeInsets.zero,
-        color: kSecondaryAppColour,
-        child: ListTile(
-          leading: Icon(
-            Icons.favorite_rounded,
-            size: 30,
-            color: Colors.amber[100],
-          ),
-          title: Text(user.currentRoom ?? 'Nope (AU)',
-              style: TextStyle(color: kPrimaryTitleColour)),
-          subtitle: Text(room.roomId ?? 'Nope (GP)'),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-      ),
     );
   }
 }
@@ -80,9 +48,9 @@ class NextMeetingWidget extends StatelessWidget {
             size: 56,
             color: Colors.amber[100],
           ),
-          title: Text('Next meeting in 3 days',
+          title: Text('Meeting feature in development',
               style: TextStyle(color: kPrimaryTitleColour)),
-          subtitle: Text('Monday 31st Feb @5.30pm',
+          subtitle: Text('Check back soon!',
               style: TextStyle(color: kPrimaryTitleColour)),
         ),
         shape: RoundedRectangleBorder(
